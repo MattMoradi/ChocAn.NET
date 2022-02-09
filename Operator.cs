@@ -19,7 +19,7 @@ namespace ChocAn
         private static void MainMenu()
         {
             string stringSelection;
-            bool correctInput;
+            bool validInput;
             int intSelection;
 
             Console.WriteLine("Select one of the options\n");
@@ -29,14 +29,14 @@ namespace ChocAn
             stringSelection = Console.ReadLine();
             
             //try to parse user input into an int
-            correctInput = int.TryParse(stringSelection, out intSelection);
+            validInput = int.TryParse(stringSelection, out intSelection);
 
             //validate user provided proper input
-            while(!correctInput || intSelection < 1 || intSelection > 3)
+            while(!validInput || intSelection < 1 || intSelection > 3)
             {
                 Console.WriteLine("Please enter a valid option\n");
                 stringSelection = Console.ReadLine();
-                correctInput = int.TryParse(stringSelection, out intSelection);
+                validInput = int.TryParse(stringSelection, out intSelection);
             }
 
             if(intSelection == 1)
