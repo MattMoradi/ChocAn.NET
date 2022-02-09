@@ -18,13 +18,54 @@ namespace ChocAn
 
         private static void MainMenu()
         {
+            string stringSelection;
+            bool correctInput;
+            int intSelection;
+
             Console.WriteLine("Select one of the options\n");
-            Console.WriteLine("1. Add operator or member\n");
-            Console.WriteLine("2. Remove operator or member\n");
-            Console.WriteLine("3. Edit operator or member\n");
-            Console.WriteLine("\n");
-            Console.WriteLine("\n");
+            Console.WriteLine("1. Modify a member\n");
+            Console.WriteLine("2. Modify an operator\n");
+            Console.WriteLine("3. Exit\n");
+            stringSelection = Console.ReadLine();
+            
+            //try to parse user input into an int
+            correctInput = int.TryParse(stringSelection, out intSelection);
+
+            //validate user provided proper input
+            while(!correctInput || intSelection < 1 || intSelection > 3)
+            {
+                Console.WriteLine("Please enter a valid option\n");
+                stringSelection = Console.ReadLine();
+                correctInput = int.TryParse(stringSelection, out intSelection);
+            }
+
+            if(intSelection == 1)
+                MemberMenu();
+            else if(intSelection == 2)
+                OperatorMenu();
+            else
+                return;
         }
+
+        private static void MemberMenu()
+        {
+            Console.WriteLine("Select one of the options\n");
+            Console.WriteLine("1. Add new member\n");
+            Console.WriteLine("2. Remove existing member\n");
+            Console.WriteLine("3. Edit existing member\n");
+            Console.WriteLine("4. Exit\n");
+        }
+
+        private static void OperatorMenu()
+        {
+            Console.WriteLine("Select one of the options\n");
+            Console.WriteLine("1. Add new operator\n");
+            Console.WriteLine("2. Remove existing operator\n");
+            Console.WriteLine("3. Edit existing operator\n");
+        }
+
+
+
 
         //Remove
         private static bool RemoveMember()
