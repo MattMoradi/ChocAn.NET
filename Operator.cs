@@ -18,9 +18,9 @@ namespace ChocAn
 
         private static void MainMenu()
         {
-            string stringSelection;
-            bool validInput;
-            int intSelection;
+            string stringSelection ="";
+            bool validInput = false;
+            int intSelection =0;
 
             Console.WriteLine("Select one of the options\n");
             Console.WriteLine("1. Modify a member\n");
@@ -81,12 +81,12 @@ namespace ChocAn
         //characters other than numbers into field
         private static bool AddMember()
         {
-            string memberName;
-            int memberId;
-            string memberAddress;
-            string memberCity;
-            string memberState;
-            int memberZip;
+            string memberName = "";
+            int memberId = -1;
+            string memberAddress = "";
+            string memberCity = "";
+            string memberState ="";
+            int memberZip = -1;
 
             Console.WriteLine("Enter the first and last name of the member (25 character limit)\n");
             memberName = Console.ReadLine();
