@@ -170,7 +170,7 @@ namespace ChocAn
             string memberNumber = "";
             Console.WriteLine("Enter the number of the member you want to remove\n");
             memberNumber = Console.ReadLine();
-            ewroitjheo we
+            
             return true;
         }
 
