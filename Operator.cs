@@ -110,7 +110,6 @@ namespace ChocAn
             string stringSelection = "";
             int intSelection = 0;
             bool isDone = false;
-
             Console.Clear();
             do
             {
@@ -131,8 +130,7 @@ namespace ChocAn
                 Console.Clear();
 
                 switch (intSelection)
-                {
-                    
+                { 
                     case 1:
                         Console.WriteLine("Add new provider not implemented\n");
                         break;
@@ -204,8 +202,8 @@ namespace ChocAn
             Console.WriteLine("Enter the member's zip code\n");
             memberZip = Convert.ToInt32(Console.ReadLine());
 
-            //place all gatehred information into member class and add to database
-            //return true if member was added, false member was not added
+            //place all gathered information into member class and add to database
+            //return true if member was added, false if member was not added
 
             return true;
         }
