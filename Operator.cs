@@ -11,10 +11,8 @@ namespace ChocAn
         {
             Console.Clear();
             Console.WriteLine("ChocAn Terminal v1.0\n");
-            // Console.WriteLine("Hello Operator!");
-            // Console.WriteLine("Press any key to return to main menu...");
+            Console.WriteLine("Hello Operator!");
             MainMenu();
-            Console.ReadKey();
         }
 
         private static void MainMenu()
@@ -38,6 +36,8 @@ namespace ChocAn
                     stringSelection = Console.ReadLine();
                 }
 
+                Console.Clear();
+
                 switch (intSelection)
                 {
                     case 1:
@@ -51,7 +51,7 @@ namespace ChocAn
                         break;
                     default:
                         {
-                            Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu");
+                            Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
                             isDone = true;
                             break;
                         } 
@@ -64,10 +64,10 @@ namespace ChocAn
             string stringSelection = "";
             int intSelection = 0;
             bool isDone = false;
-
             Console.Clear();
             do
             {
+
                 Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Add new member\n");
                 Console.WriteLine("2. Remove existing member\n");
@@ -81,6 +81,8 @@ namespace ChocAn
                     Console.WriteLine("Please enter a valid option\n");
                     stringSelection = Console.ReadLine();
                 }
+
+                Console.Clear();
 
                 switch (intSelection)
                 {
@@ -97,7 +99,7 @@ namespace ChocAn
                         isDone = true;
                         break;
                     default:
-                        Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu");
+                        Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
                         break;
                 }
             } while (!isDone);
@@ -105,10 +107,52 @@ namespace ChocAn
 
         private static void ProviderMenu()
         {
-            Console.WriteLine("Select one of the options\n");
-            Console.WriteLine("1. Add new provider\n");
-            Console.WriteLine("2. Remove existing provider\n");
-            Console.WriteLine("3. Edit existing provider\n");
+            string stringSelection = "";
+            int intSelection = 0;
+            bool isDone = false;
+
+            Console.Clear();
+            do
+            {
+                Console.WriteLine("Select one of the options\n");
+                Console.WriteLine("1. Add new provider\n");
+                Console.WriteLine("2. Remove existing provider\n");
+                Console.WriteLine("3. Edit existing provider\n");
+                Console.WriteLine("4. Exit\n");
+                stringSelection = Console.ReadLine();
+
+                //check if user provided valid input
+                while (!ValidInput(stringSelection, out intSelection, 4))
+                {
+                    Console.WriteLine("Please enter a valid option\n");
+                    stringSelection = Console.ReadLine();
+                }
+
+                Console.Clear();
+
+                switch (intSelection)
+                {
+                    
+                    case 1:
+                        Console.WriteLine("Add new provider not implemented\n");
+                        break;
+                    case 2:
+                        Console.WriteLine("Remove provider not implemented\n");
+                        break;
+                    case 3:
+                        Console.WriteLine("Edit provider not implemented\n");
+                        break;
+                    case 4:
+                        isDone = true;
+                        break;
+                    default:
+                    {
+                        Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
+                        isDone = true;
+                        break;
+                    }   
+                }  
+            } while (!isDone);
         }
 
         //Helper function to check if user provided valid input
@@ -122,8 +166,6 @@ namespace ChocAn
                 return false;
             return true;
         }
-
-
 
         //Remove
         private static bool RemoveMember()
