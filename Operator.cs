@@ -27,7 +27,7 @@ namespace ChocAn
             {
                 Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Modify a member\n");
-                Console.WriteLine("2. Modify an operator\n");
+                Console.WriteLine("2. Modify a provider\n");
                 Console.WriteLine("3. Exit\n");
                 stringSelection = Console.ReadLine();
 
@@ -41,10 +41,10 @@ namespace ChocAn
                 switch (intSelection)
                 {
                     case 1:
-                        Console.WriteLine("Modify member not implmented\n");
+                        MemberMenu();
                         break;
                     case 2:
-                        Console.WriteLine("Modify operator not implmented\n");
+                        ProviderMenu();
                         break;
                     case 3:
                         isDone = true;
@@ -85,13 +85,13 @@ namespace ChocAn
                 switch (intSelection)
                 {
                     case 1:
-                        Console.WriteLine("Add new member not implmented\n");
+                        Console.WriteLine("Add new member not implemented\n");
                         break;
                     case 2:
-                        Console.WriteLine("Remove member not implmented\n");
+                        Console.WriteLine("Remove member not implemented\n");
                         break;
                     case 3:
-                        Console.WriteLine("Edit member not implmented\n");
+                        Console.WriteLine("Edit member not implemented\n");
                         break;
                     case 4:
                         isDone = true;
@@ -103,12 +103,12 @@ namespace ChocAn
             } while (!isDone);
         }
 
-        private static void OperatorMenu()
+        private static void ProviderMenu()
         {
             Console.WriteLine("Select one of the options\n");
-            Console.WriteLine("1. Add new operator\n");
-            Console.WriteLine("2. Remove existing operator\n");
-            Console.WriteLine("3. Edit existing operator\n");
+            Console.WriteLine("1. Add new provider\n");
+            Console.WriteLine("2. Remove existing provider\n");
+            Console.WriteLine("3. Edit existing provider\n");
         }
 
         //Helper function to check if user provided valid input
