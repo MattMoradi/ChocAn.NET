@@ -67,7 +67,6 @@ namespace ChocAn
             Console.Clear();
             do
             {
-
                 Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Add new member\n");
                 Console.WriteLine("2. Remove existing member\n");
@@ -168,7 +167,9 @@ namespace ChocAn
         //Remove
         private static bool RemoveMember()
         {
-
+            string memberNumber = "";
+            Console.WriteLine("Enter the number of the member you want to remove\n");
+            memberNumber = Console.ReadLine();
             return true;
         }
 
