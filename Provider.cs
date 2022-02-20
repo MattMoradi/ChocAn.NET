@@ -9,7 +9,7 @@ namespace ChocAn
         public static void ProviderMain(Database database)
         {
             Console.Clear();
-            Console.WriteLine("ChocAn Terminal v1.0\n");
+            Console.WriteLine("ChocAn.NET Terminal v1.0\n");
             Console.WriteLine("Hello Provider!");
 
             /* // example database calls

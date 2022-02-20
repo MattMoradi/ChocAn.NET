@@ -13,7 +13,7 @@ namespace ChocAn
             while(!quit)
             {
                 Console.Clear();
-                Console.WriteLine("ChocAn Terminal v1.0\n");
+                Console.WriteLine("ChocAn.NET Terminal v1.0\n");
                 Console.WriteLine("--- Select Your Role: ---\n");
                 Console.WriteLine("1) Operator");
                 Console.WriteLine("2) Member");
