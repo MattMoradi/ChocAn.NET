@@ -15,10 +15,10 @@ namespace ChocAn
             {
                 // Save Provider Directory File
                 StreamWriter pd = new StreamWriter("ProviderDirectory.txt");
-                pd.WriteLine(ProviderDirectory.Aerobics + " - " + (int)ProviderDirectory.Aerobics);
-                pd.WriteLine(ProviderDirectory.Dietitian + " - " + (int)ProviderDirectory.Dietitian);
-                pd.WriteLine(ProviderDirectory.Vanilla + " - " + (int)ProviderDirectory.Vanilla);
-                pd.WriteLine(ProviderDirectory.Hamster + " - " + (int)ProviderDirectory.Hamster);
+                pd.WriteLine(ProviderDirectory.Aerobics + " - " + (int)ProviderDirectory.Aerobics + ": $127");
+                pd.WriteLine(ProviderDirectory.Dietitian + " - " + (int)ProviderDirectory.Dietitian + ": $700");
+                pd.WriteLine(ProviderDirectory.Vanilla + " - " + (int)ProviderDirectory.Vanilla + ": $450");
+                pd.WriteLine(ProviderDirectory.Hamster + " - " + (int)ProviderDirectory.Hamster + $": $824");
                 pd.Close();
             }
             catch(Exception e)
@@ -37,7 +37,7 @@ namespace ChocAn
 
                 for (int i = 0; data.members[i].name != null; i++)
                 {
-                    //Console.WriteLine("Member" + Path.DirectorySeparatorChar + $"{data.members[i].name}.txt"); //delete
+                    //Console.WriteLine("Member" + Path.DirectorySeparatorChar + $"{data.members[i].name}.txt");
                     Writer = new StreamWriter("Members" + Path.DirectorySeparatorChar + $"{data.members[i].name}.txt");
                     Writer.WriteLine(data.members[i].name);
                     Writer.WriteLine(data.members[i].number);
@@ -79,12 +79,39 @@ namespace ChocAn
                         Writer.WriteLine(data.providers[i].records[j].serviceCode);
                         Writer.WriteLine(data.providers[i].records[j].fee);
                         Writer.WriteLine(data.providers[i].records[j].comment);
+                        Writer.WriteLine();
                     }
+                    Writer.WriteLine();
                     Writer.Close();
                 }
             }
             catch(Exception e)
             {
+                Console.WriteLine("Failed to save database to disk!");
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public void writeEFT(Database data)
+        {
+            try
+            {
+                StreamWriter EFT = new StreamWriter("EFT.txt");
+                for (int i = 0; data.providers[i].name != null; i++)
+                {
+                    if (data.providers[i].totalFee > 0)
+                    {
+                        EFT.WriteLine(data.providers[i].name);
+                        EFT.WriteLine(data.providers[i].number);
+                        EFT.WriteLine(data.providers[i].totalFee);
+                        EFT.WriteLine();
+                    }
+                }
+                EFT.Close();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Failed to write EFT!");
                 Console.WriteLine(e.Message);
             }
         }
