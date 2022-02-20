@@ -12,7 +12,7 @@ namespace ChocAn
             Console.WriteLine("ChocAn.NET Terminal v1.0\n");
             Console.WriteLine("Hello Provider!");
 
-            /* // example database calls
+            /* // some example database calls
             database.providers[0].name = "freddy";
             database.providers[0].number = 421;
             database.providers[0].totalFee = 420.99;

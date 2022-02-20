@@ -47,12 +47,14 @@ namespace ChocAn
                     Writer.WriteLine(data.members[i].zip);
                     Writer.WriteLine(data.members[i].status);
 
-                    for (int j = 0; data.members[i].records[j].date != null; j++)
+                    for (int j = 0; data.members[i].records != null && data.members[i].records[j].date != null; j++)
                     {
                         Writer.WriteLine(data.members[i].records[j].date);
                         Writer.WriteLine(data.members[i].records[j].providerName);
                         Writer.WriteLine(data.members[i].records[j].service);
+                        Writer.WriteLine();
                     }
+                    Writer.WriteLine();
                     Writer.Close();
                 }
 
@@ -70,7 +72,7 @@ namespace ChocAn
                     Writer.WriteLine(data.providers[i].consultations);
                     Writer.WriteLine(data.providers[i].totalFee);
 
-                    for (int j = 0; data.providers[i].records[j].date != null; j++)
+                    for (int j = 0; data.providers[i].records != null && data.providers[i].records[j].date != null; j++)
                     {
                         Writer.WriteLine(data.providers[i].records[j].date);
                         Writer.WriteLine(data.providers[i].records[j].timestamp);
@@ -88,7 +90,7 @@ namespace ChocAn
             catch(Exception e)
             {
                 Console.WriteLine("Failed to save database to disk!");
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Exception: " + e.Message);
             }
         }
 
@@ -112,7 +114,7 @@ namespace ChocAn
             catch(Exception e)
             {
                 Console.WriteLine("Failed to write EFT!");
-                Console.WriteLine(e.Message);
+                Console.WriteLine("Exception: " + e.Message);
             }
         }
 
