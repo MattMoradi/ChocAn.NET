@@ -4,13 +4,14 @@ using System.Text;
 
 namespace ChocAn
 {
-    static class Member
+    class Member
     {
-        public static void MemberMain()
+        public static void MemberMain(Database.Members[] members)
         {
             Console.Clear();
             Console.WriteLine("ChocAn Terminal v1.0\n");
             Console.WriteLine("Hello Member!");
+
             Console.WriteLine("Press any key to return to main menu...");
             Console.ReadKey();
         }

@@ -8,6 +8,8 @@ namespace ChocAn
         {
             bool quit = false;
 
+            Database data = new Database();
+
             while(!quit)
             {
                 Console.Clear();
@@ -23,10 +25,10 @@ namespace ChocAn
 
                 switch (input)
                 {
-                    case "1": Operator.OperatorMain(); break;
-                    case "2": Member.MemberMain(); break;
-                    case "3": Provider.ProviderMain(); break;
-                    case "4": Manager.ManagerMain(); break;
+                    case "1": Operator.OperatorMain(data); break;
+                    case "2": Member.MemberMain(data.members); break;
+                    case "3": Provider.ProviderMain(data); break;
+                    case "4": Manager.ManagerMain(data.providers); break;
                     case "5": quit = true; break;
                     default: Console.WriteLine("Invalid Input!"); break;
                 }

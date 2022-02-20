@@ -6,7 +6,7 @@ namespace ChocAn
 {
     class Manager
     {
-        public static void ManagerMain()
+        public static void ManagerMain(Database.Providers[] providers)
         {
             Console.Clear();
             Console.WriteLine("ChocAn Terminal v1.0\n");
