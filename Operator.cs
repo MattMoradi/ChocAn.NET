@@ -7,10 +7,10 @@ namespace ChocAn
     static class Operator
     {
 
-        public static void OperatorMain()
+        public static void OperatorMain(Database database)
         {
             Console.Clear();
-            Console.WriteLine("ChocAn Terminal v1.0\n");
+            Console.WriteLine("ChocAn.NET Terminal v1.0\n");
             Console.WriteLine("Hello Operator!");
             MainMenu();
         }
