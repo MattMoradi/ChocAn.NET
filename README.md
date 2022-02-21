@@ -26,3 +26,6 @@ Setting timestamps automatically:
 Writing 2 Disk:
 `database.save2disk(database);`
 `database.writeEFT(database);`
+
+## Architecture
+![architecture](https://github.com/matthew17754/ChocAn/blob/database/architecture.png?raw=true)
