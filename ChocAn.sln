@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocAn", "ChocAn.csproj", "{71B18D05-F3C4-4711-9ED1-98F2D368C98F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChocAn", "ChocAn\ChocAn.csproj", "{71B18D05-F3C4-4711-9ED1-98F2D368C98F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
