@@ -27,5 +27,14 @@ Writing 2 Disk:
 `database.save2disk(database);`
 `database.writeEFT(database);`
 
+Limit String Length:
+`string myString = "string to be limited".Substring(0, length);`
+
+Getting Provider Directory Field (Aerobics):
+`Database.ProviderDirectory.Aerobics`
+
+Getting Provider Directory Value (Aerobics):
+`(int)Database.ProviderDirectory.Aerobics`
+
 ## Architecture
 ![architecture](https://github.com/matthew17754/ChocAn/blob/database/architecture.png?raw=true)
