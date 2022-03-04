@@ -92,7 +92,7 @@ namespace ChocAn
                 switch (intSelection)
                 {
                     case 1:
-                        AddMember(database);
+                        AddPerson(database,"Member");
                         break;
                     case 2:
                         Console.WriteLine("Remove member not implemented\n");
@@ -137,7 +137,7 @@ namespace ChocAn
                 switch (intSelection)
                 {
                     case 1:
-                        Console.WriteLine("Add new provider not implemented\n");
+                        AddPerson(database, "Provider");
                         break;
                     case 2:
                         Console.WriteLine("Remove provider not implemented\n");
@@ -208,7 +208,7 @@ namespace ChocAn
                     //move last member of array into the place of the member being removed
                     else
                     {
-                        //update data
+                        //replace data at the elemet that is being removed with last element data
                         database.members[i].name = database.members[mNumMembers - 1].name;
                         database.members[i].number = database.members[mNumMembers - 1].number;
                         database.members[i].city = database.members[mNumMembers - 1].city;
@@ -231,62 +231,101 @@ namespace ChocAn
                 }
                 i++;
             }
-
-
         }
 
 
-        private static void AddMember(Database database)
+        private static void AddPerson(Database database, string type)
         {
-            int memberId;
+            int accountId;
+            int zip;
             string memberZipString;
+            string accountType;
+            string name;
+            string address;
+            string city;
+            string state;
 
-            Console.WriteLine("Enter the first and last name of the member (25 character limit)\n");
-            database.members[mNumMembers].name = Console.ReadLine();
-            Console.WriteLine("Enter the member's address (25 character limit)\n");
-            database.members[mNumMembers].address = Console.ReadLine();
-            Console.WriteLine("Enter the member's city (14 character limit)\n");
-            database.members[mNumMembers].city = Console.ReadLine();
-            Console.WriteLine("Enter the two letter state abbreviation\n");
-            database.members[mNumMembers].state = Console.ReadLine();
-            Console.WriteLine("Enter the member's zip code\n");
+            if (type == "Member")
+                accountType = "Member";
+            else
+                accountType = "Provider";
+
+            Console.WriteLine("Enter the " + accountType + "'s first and last name (25 character limit)\n");
+            name = Console.ReadLine();
+            Console.WriteLine("Enter the " + accountType + "'s address (25 character limit)\n");
+            address = Console.ReadLine();
+            Console.WriteLine("Enter the " + accountType + "'s city (14 character limit)\n");
+            city = Console.ReadLine();
+            Console.WriteLine("Enter the " + accountType + "'s two letter state abbreviation\n");
+            state = Console.ReadLine();
+            Console.WriteLine("Enter the " + accountType + "'s zip code\n");
             memberZipString = Console.ReadLine();
 
             //try and parse zip code into an int
-            while (!int.TryParse(memberZipString, out database.members[mNumMembers].zip))
-
+            while (!int.TryParse(memberZipString, out zip))
             {
                 Console.WriteLine("Enter a valid zip code\n");
                 memberZipString = Console.ReadLine();
             }
 
-            //generate member id
-            memberId = GenerateID(database, "Member");
-            //set member status to valid
-            database.members[mNumMembers].status = (Database.Validity)0;
+            //generate account id
+            accountId = GenerateID(database, accountType);
 
             //truncate all data to character limit
-            if (database.members[mNumMembers].name.Length > 25)
-                database.members[mNumMembers].name = database.members[mNumMembers].name.Substring(0, 25);
-            if (database.members[mNumMembers].address.Length > 25)
-                database.members[mNumMembers].address = database.members[mNumMembers].address.Substring(0, 25);
-            if (database.members[mNumMembers].city.Length > 25)
-                database.members[mNumMembers].city = database.members[mNumMembers].city.Substring(0, 25);
-            if (database.members[mNumMembers].state.Length > 2)
-                database.members[mNumMembers].state = database.members[mNumMembers].state.Substring(0, 2);
-            database.members[mNumMembers].number = memberId;
+            if (name.Length > 25)
+                name = name.Substring(0, 25);
+            if (address.Length > 25)
+                address = address.Substring(0, 25);
+            if (city.Length > 14)
+                city = city.Substring(0, 14);
+            if (state.Length > 2)
+                state = state.Substring(0, 2);
+
+            if (type == "Member")
+                CreateMember(database, name, address, city, state, zip, accountId);
+            else
+                CreateProvider(database, name, address, city, state, zip, accountId);
+
+        }
+
+        private static void CreateMember(Database database, string name, string address, string city, string state, int zip,int id)
+        {
+            database.members[mNumMembers].name = name;
+            database.members[mNumMembers].address = address;
+            database.members[mNumMembers].city = city; 
+            database.members[mNumMembers].state = state;
+            database.members[mNumMembers].zip = zip;
+            database.members[mNumMembers].status = (Database.Validity)0;
+            database.members[mNumMembers].records = null;
+            database.members[mNumMembers].number = id;
             mNumMembers++;
         }
+       
+        private static void CreateProvider(Database database, string name, string address, string city, string state, int zip,int id)
+        {
+            database.providers[mNumProviders].name = name;
+            database.providers[mNumProviders].address = address;
+            database.providers[mNumProviders].city = city;
+            database.providers[mNumProviders].state = state;
+            database.providers[mNumProviders].zip = zip;
+            database.providers[mNumProviders].consultations = 0;
+            database.providers[mNumProviders].totalFee = 0;
+            database.providers[mNumProviders].records = null;
+            database.providers[mNumProviders].number = id;
+            mNumProviders++;
+        }
+
 
         //Generate a random ID number.
         private static int GenerateID(Database database, string type)
         {
             Random rand = new Random();
-            int randNum = rand.Next(100000000, 999999999);
+            int randNum = rand.Next(1000000, 9999999);
             int i = 0;
 
             if (type == "Member")
             {
+                Console.WriteLine("\n\n\nIn Member\n\n\n");
                 while (database.members[i].number != 0)
                 {
                     //if random number matches number in database
@@ -294,7 +333,7 @@ namespace ChocAn
                     if (database.members[i].number == randNum)
                     {
                         i = 0;
-                        randNum = rand.Next(1000, 9999);
+                        randNum = rand.Next(1000000, 9999999);
                     }
                     else
                         i++;
@@ -302,6 +341,7 @@ namespace ChocAn
             }
             else if (type == "Provider")
             {
+                Console.WriteLine("\n\n\nIn provider\n\n\n");
                 while (database.providers[i].number != 0)
                 {
                     //if random number matches number in database
@@ -314,8 +354,6 @@ namespace ChocAn
                     else
                         i++;
                 }
-
-
             }
             else
                 return -1;
@@ -325,7 +363,7 @@ namespace ChocAn
 
         private static void DisplayDataBase(Database database)
         {
-            int total = 0;
+          
             int members = 0;
             int providers = 0;
             int i = 0;
@@ -339,6 +377,7 @@ namespace ChocAn
                 Console.WriteLine("City: " + database.members[i].city);
                 Console.WriteLine("Validity: " + database.members[i].status);
                 i++;
+                ++members;
             }
             i = 0;
             Console.WriteLine("\n\nProviders\n\n");
@@ -351,13 +390,14 @@ namespace ChocAn
                 Console.WriteLine("Number: " + database.providers[i].number);
                 Console.WriteLine("City: " + database.providers[i].city);
                 i++;
+                ++providers;
             }
 
 
 
             Console.WriteLine("Members displayed: " + members + "\n");
             Console.WriteLine("Providers displayed: " + providers + "\n");
-            Console.WriteLine("Total displayed: " + total + "\n");
+            Console.WriteLine("Total displayed: " + members + providers + "\n");
         }
     }
 }
