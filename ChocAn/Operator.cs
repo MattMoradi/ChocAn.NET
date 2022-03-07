@@ -13,23 +13,25 @@ namespace ChocAn
             Console.Clear();
             Console.WriteLine("ChocAn.NET Terminal v1.0\n");
             Console.WriteLine("Hello Operator!");
-
+            PopulateAccounts(database);
             MainMenu(database);
         }
 
+        //Displays the main menu to the user
         private static void MainMenu(Database database)
         {
             string stringSelection = "";
             int intSelection = 0;
             bool isDone = false;
             Console.Clear();
+
             do
             {
                 Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Modify a member\n");
                 Console.WriteLine("2. Modify a provider\n");
                 Console.WriteLine("3. Exit\n");
-                Console.WriteLine("4. Display Database\n");
+                Console.WriteLine("4. Display Database\n");//will be removed when testing is done
                 stringSelection = Console.ReadLine();
 
                 //check if user provided valid input
@@ -53,7 +55,7 @@ namespace ChocAn
                         isDone = true;
                         break;
                     case 4:
-                        DisplayDataBase(database);
+                        DisplayDatabase(database);
                         break;
                     default:
                         {
@@ -65,12 +67,14 @@ namespace ChocAn
             } while (!isDone);
         }
 
+        //Displayes the member options to the user
         private static void MemberMenu(Database database)
         {
             string stringSelection = "";
             int intSelection = 0;
             bool isDone = false;
             Console.Clear();
+
             do
             {
                 Console.WriteLine("Select one of the options\n");
@@ -89,13 +93,14 @@ namespace ChocAn
 
                 Console.Clear();
 
-                switch (intSelection)
+                switch (intSelection) 
                 {
                     case 1:
                         AddPerson(database,"Member");
                         break;
                     case 2:
-                        Console.WriteLine("Remove member not implemented\n");
+                        //Console.WriteLine("Remove member not implemented\n");
+                        RemovePerson(database, "Member");
                         break;
                     case 3:
                         Console.WriteLine("Edit member not implemented\n");
@@ -104,18 +109,23 @@ namespace ChocAn
                         isDone = true;
                         break;
                     default:
-                        Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
-                        break;
+                        {
+                            Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
+                            isDone = true;
+                            break;
+                        }
                 }
             } while (!isDone);
         }
 
+        //Displays that provider options to the user
         private static void ProviderMenu(Database database)
         {
             string stringSelection = "";
             int intSelection = 0;
             bool isDone = false;
             Console.Clear();
+
             do
             {
                 Console.WriteLine("Select one of the options\n");
@@ -140,7 +150,8 @@ namespace ChocAn
                         AddPerson(database, "Provider");
                         break;
                     case 2:
-                        Console.WriteLine("Remove provider not implemented\n");
+                        //  Console.WriteLine("Remove provider not implemented\n");
+                        RemovePerson(database, "Provider");
                         break;
                     case 3:
                         Console.WriteLine("Edit provider not implemented\n");
@@ -158,7 +169,11 @@ namespace ChocAn
             } while (!isDone);
         }
 
-        //Helper function to check if user provided valid input
+        //Helper function to check if user provided valid input. The first argument
+        //is a string representation of the user input. The second argument is the int representation of
+        //the user input. The third argument is the number of options the user can select from the menu.
+        //Will return true if the string was able to be parsed as an int. False if it was not or if the user
+        //selected an invalid menu option.
         private static bool ValidInput(string stringSelection, out int intSelection, int numChoices)
         {
             //try and parse user input into an int
@@ -170,29 +185,18 @@ namespace ChocAn
             return true;
         }
 
-        //Remove
-        private static void RemoveMember(Database database)
+        //Remove member from database.This function takes the database
+        //and the id of the member that is being removed
+        private static void RemoveMember(Database database, int id)
         {
-            int memberIdRemove = 0;
-            string memberString;
             int i = 0;
             bool found = false;
-            Console.WriteLine("Enter the six digit id of the member you want to remove\n");
-            memberString = Console.ReadLine();
-
-            //ensure user provides valid data
-            while (((!int.TryParse(memberString, out memberIdRemove)) && memberIdRemove < 100000) || memberString != "exit")
-            {
-                Console.WriteLine("Enter a valid member id or type 'exit' to return to the last menu\n");
-                memberString = Console.ReadLine();
-            }
-
-
+           
             //while there is a valid member at index i
             while (database.members[i].name != null && !found)
             {
                 //compare the current member at index i to the id to be removed
-                if (database.members[i].number == memberIdRemove)
+                if (database.members[i].number == id)
                 {
                     //check if member to remove is at the end of the array
                     if (i + 1 == mNumMembers)
@@ -216,24 +220,117 @@ namespace ChocAn
                         database.members[i].state = database.members[mNumMembers - 1].state;
                         database.members[i].status = database.members[mNumMembers - 1].status;
                         database.members[i].records = database.members[mNumMembers - 1].records;
+                        database.members[i].zip = database.members[mNumMembers - 1].zip;
 
                         //set last element to null
-                        database.members[i].name = null;
-                        database.members[i].number = 0;
-                        database.members[i].city = null;
-                        database.members[i].address = null;
-                        database.members[i].state = null;
-                        database.members[i].status = 0;
-                        database.members[i].records = null;
+                        database.members[mNumMembers - 1].name = null;
+                        database.members[mNumMembers - 1].number = 0;
+                        database.members[mNumMembers - 1].city = null;
+                        database.members[mNumMembers - 1].address = null;
+                        database.members[mNumMembers - 1].state = null;
+                        database.members[mNumMembers - 1].status = 0;
+                        database.members[mNumMembers - 1].records = null;
+                        database.members[mNumMembers - 1].zip = 0;
                     }
                     found = true;
                     --mNumMembers;
                 }
                 i++;
             }
+            if(!found)
+                Console.WriteLine("Member was not found\n");
+            else
+                Console.WriteLine("Member was successfully removed\n");
         }
 
+        //Remove provider from datrabase. This function takes the database
+        //and the id of the provider that is being removed
+        private static void RemvoveProvider(Database database, int id)
+        {
+            bool found = false;
+            int i = 0;
 
+            //while there is a valid provider at index i
+            while (database.providers[i].name != null && !found)
+            {
+                //compare the current provider at index i to the id to be removed
+                if (database.providers[i].number == id)
+                {
+                    //check if member to remove is at the end of the array
+                    if (i + 1 == mNumProviders)
+                    {
+                        database.providers[i].name = null;
+                        database.providers[i].number = 0;
+                        database.providers[i].city = null;
+                        database.providers[i].address = null;
+                        database.providers[i].state = null;
+                        database.providers[i].totalFee = 0;
+                        database.providers[i].consultations = 0;
+                        database.providers[i].records = null;
+                        database.providers[i].zip = 0;
+                    }
+                    else
+                    {
+                        //replace data at the element that is being removed with last element data
+                        database.providers[i].name = database.providers[mNumProviders - 1].name;
+                        database.providers[i].number = database.providers[mNumProviders - 1].number;
+                        database.providers[i].city = database.providers[mNumProviders - 1].city;
+                        database.providers[i].address = database.providers[mNumProviders - 1].address;
+                        database.providers[i].state = database.providers[mNumProviders - 1].state;
+                        database.providers[i].totalFee = database.providers[mNumProviders - 1].totalFee;
+                        database.providers[i].consultations = database.providers[mNumProviders - 1].consultations;
+                        database.providers[i].records = database.providers[mNumProviders - 1].records;
+                        database.providers[i].zip = database.providers[mNumProviders - 1].zip;
+
+                        //set last element to null in provider array
+                        database.providers[mNumProviders - 1].name = null;
+                        database.providers[mNumProviders - 1].number = 0;
+                        database.providers[mNumProviders - 1].city = null;
+                        database.providers[mNumProviders - 1].address = null;
+                        database.providers[mNumProviders - 1].state = null;
+                        database.providers[mNumProviders - 1].totalFee = 0;
+                        database.providers[mNumProviders - 1].consultations = 0;
+                        database.providers[mNumProviders - 1].records = null;
+                        database.providers[mNumProviders - 1].zip = 0;
+                    }
+                    found = true;
+                    --mNumProviders;
+                }
+                i++;
+            }
+            if (!found)
+                Console.WriteLine("Provider was not found\n");
+            else
+                Console.WriteLine("Provider was successfully removed\n");
+        }
+
+        //Get user input to remove either a member or provider from the database.
+        //This function takes the database and a string that represents the type of
+        //account that should be removed
+        private static void RemovePerson(Database database, string type)
+        {
+            int idToRemove = 0;
+            string personString;
+
+            Console.WriteLine("Enter the nine digit id of the " + type + " you want to remove\n");
+            personString = Console.ReadLine();
+
+            //ensure user provides valid data
+            while (!int.TryParse(personString, out idToRemove))
+            {
+                Console.WriteLine("Please enter a valid id number\n");
+                personString = Console.ReadLine();
+            }
+
+            if (type == "Member")
+                RemoveMember(database, idToRemove);
+            else
+                RemvoveProvider(database, idToRemove);
+        }
+
+        //Get user input to add either a member or provider to the database.
+        //This function takes the database and a string that represents the type of
+        //account that should be added
         private static void AddPerson(Database database, string type)
         {
             int accountId;
@@ -245,11 +342,13 @@ namespace ChocAn
             string city;
             string state;
 
+            //check what kind of account is being created
             if (type == "Member")
                 accountType = "Member";
             else
                 accountType = "Provider";
 
+            //gather user input
             Console.WriteLine("Enter the " + accountType + "'s first and last name (25 character limit)\n");
             name = Console.ReadLine();
             Console.WriteLine("Enter the " + accountType + "'s address (25 character limit)\n");
@@ -281,6 +380,7 @@ namespace ChocAn
             if (state.Length > 2)
                 state = state.Substring(0, 2);
 
+            //copy data into proper account type
             if (type == "Member")
                 CreateMember(database, name, address, city, state, zip, accountId);
             else
@@ -288,6 +388,7 @@ namespace ChocAn
 
         }
 
+        //Creates a member account by taking the database and the member fields
         private static void CreateMember(Database database, string name, string address, string city, string state, int zip,int id)
         {
             database.members[mNumMembers].name = name;
@@ -300,8 +401,9 @@ namespace ChocAn
             database.members[mNumMembers].number = id;
             mNumMembers++;
         }
-       
-        private static void CreateProvider(Database database, string name, string address, string city, string state, int zip,int id)
+
+        //Creates a provider account by taking the database and the provider fields
+        private static void CreateProvider(Database database, string name, string address, string city, string state, int zip, int id)
         {
             database.providers[mNumProviders].name = name;
             database.providers[mNumProviders].address = address;
@@ -316,24 +418,24 @@ namespace ChocAn
         }
 
 
-        //Generate a random ID number.
+        //Generate a random  9 digit id number.
+        //Regenerate id if match has NOT been tested
         private static int GenerateID(Database database, string type)
         {
             Random rand = new Random();
-            int randNum = rand.Next(1000000, 9999999);
+            int randNum = rand.Next(100000000, 999999999);
             int i = 0;
 
             if (type == "Member")
             {
-                Console.WriteLine("\n\n\nIn Member\n\n\n");
                 while (database.members[i].number != 0)
                 {
                     //if random number matches number in database
-                    //reset counter and generate new random number
+                    //reset counter and generates new random number
                     if (database.members[i].number == randNum)
                     {
                         i = 0;
-                        randNum = rand.Next(1000000, 9999999);
+                        randNum = rand.Next(100000000, 999999999);
                     }
                     else
                         i++;
@@ -341,15 +443,15 @@ namespace ChocAn
             }
             else if (type == "Provider")
             {
-                Console.WriteLine("\n\n\nIn provider\n\n\n");
+
                 while (database.providers[i].number != 0)
                 {
                     //if random number matches number in database
-                    //reset counter and generate new random number
+                    //reset counter and generates new random number
                     if (database.providers[i].number == randNum)
                     {
                         i = 0;
-                        randNum = rand.Next(1000, 9999);
+                        randNum = rand.Next(100000000, 999999999);
                     }
                     else
                         i++;
@@ -361,43 +463,64 @@ namespace ChocAn
             return randNum;
         }
 
-        private static void DisplayDataBase(Database database)
+        //Display the content of the database for testing
+        private static void DisplayDatabase(Database database)
         {
-          
             int members = 0;
             int providers = 0;
             int i = 0;
+
             while (database.members[i].address != null)
             {
                 Console.WriteLine("Name: " + database.members[i].name);
                 Console.WriteLine("Address: " + database.members[i].address);
-                Console.WriteLine("Zip: " + database.members[i].zip);
-                Console.WriteLine("State: " + database.members[i].state);
-                Console.WriteLine("Number: " + database.members[i].number);
                 Console.WriteLine("City: " + database.members[i].city);
+                Console.WriteLine("State: " + database.members[i].state);
+                Console.WriteLine("Zip: " + database.members[i].zip);
+                Console.WriteLine("Number: " + database.members[i].number);
                 Console.WriteLine("Validity: " + database.members[i].status);
+                Console.WriteLine("\n");
                 i++;
                 ++members;
             }
+
             i = 0;
-            Console.WriteLine("\n\nProviders\n\n");
+            Console.WriteLine("\n-_-Providers-_-\n");
+
             while (database.providers[i].address != null)
             {
                 Console.WriteLine("Name: " + database.providers[i].name);
                 Console.WriteLine("Address: " + database.providers[i].address);
-                Console.WriteLine("Zip: " + database.providers[i].zip);
-                Console.WriteLine("State: " + database.providers[i].state);
-                Console.WriteLine("Number: " + database.providers[i].number);
                 Console.WriteLine("City: " + database.providers[i].city);
+                Console.WriteLine("State: " + database.providers[i].state);
+                Console.WriteLine("Zip: " + database.providers[i].zip);
+                Console.WriteLine("Number: " + database.providers[i].number);
+                Console.WriteLine("\n");
                 i++;
                 ++providers;
             }
-
-
-
+            int total = providers + members;
             Console.WriteLine("Members displayed: " + members + "\n");
             Console.WriteLine("Providers displayed: " + providers + "\n");
-            Console.WriteLine("Total displayed: " + members + providers + "\n");
+            Console.WriteLine("Total displayed: " + total + "\n");
+        }
+
+        //Test function to populate member and provider accounts. This function will be removed when testing is completed
+        private static void PopulateAccounts(Database database)
+        {
+            //providers
+            CreateProvider(database, "Steve Harvey", "123 fake st", "Tigard", "OR", 97223, GenerateID(database, "Provider"));
+            CreateProvider(database, "Jennifer Montano", "2060 Hide A Way Road", "Santa Clara", "CA", 95050, GenerateID(database, "Provider"));
+            CreateProvider(database, "David Smith", "2174 Jehovah Drive", "Rocky Mount", "VA", 24151, GenerateID(database, "Provider"));
+            CreateProvider(database, "Jared Williams", "1151 Khale Street", "Murrells Inlet", "SC", 29576, GenerateID(database, "Provider"));
+            CreateProvider(database, "Ann Guajardo", "126 Valley Drive", "Norristown", "PA", 19403, GenerateID(database, "Provider"));
+            //members
+            CreateMember(database, "Lisa J Macklin", "4429 Jerry Dove Drive", "Myrtle Beach", "SC", 29577, GenerateID(database, "Member"));
+            CreateMember(database, "Mary B Kirkland", "1703 Point Street", "Chicago", "IL", 60620, GenerateID(database, "Member"));
+            CreateMember(database, "Louis C Quinn", "2603 Short Street", "Austin", "TX", 78660, GenerateID(database, "Member"));
+            CreateMember(database, "Lorraine J Mayer", "2849 Heritage Road", "Madera", "CA", 93638, GenerateID(database, "Member"));
+            CreateMember(database, "David R Kean", "1146 Hickman Street", "Chicago", "IL", 60654, GenerateID(database, "Member"));
+
         }
     }
 }
