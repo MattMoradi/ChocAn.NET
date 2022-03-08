@@ -67,7 +67,7 @@ namespace ChocAn
             } while (!isDone);
         }
 
-        //Displayes the member options to the user
+        //Displays the member options to the user
         private static void MemberMenu(Database database)
         {
             string stringSelection = "";
@@ -121,7 +121,7 @@ namespace ChocAn
         //Displays that provider options to the user
         private static void ProviderMenu(Database database)
         {
-            string stringSelection = "";
+            string stringSelection;
             int intSelection = 0;
             bool isDone = false;
             Console.Clear();
@@ -168,6 +168,39 @@ namespace ChocAn
                 }
             } while (!isDone);
         }
+
+        //work in prog
+        private static void AddRecord(Database database, string type)
+        {
+            int idRecordToAdd = 0;
+            string personString;
+
+            Console.WriteLine("Enter the nine digit id of the " + type + " you want to add a record to\n");
+            personString = Console.ReadLine();
+
+            //ensure user provides valid data
+            while (!int.TryParse(personString, out idRecordToAdd) && !isInDatabase(database,type, idRecordToAdd))
+            {
+                Console.WriteLine("Please enter a valid id number\n");
+                personString = Console.ReadLine();
+            }
+
+            if (type == "Member")
+                AddMemberRecord(database, idRecordToAdd);
+            else
+                RemvoveProvider(database, idRecordToAdd);
+        }
+
+        private static void AddMemberRecord(Database database, int index)
+        {
+            Console.WriteLine("Enter the data of the service (MM-DD-YYYY)");
+            database.members[index].records[database.members[index].records.Length - 1].date = Console.ReadLine();
+            Console.WriteLine("Enter the name of the provider who provided the serviced for " + database.members[index].name);
+            database.members[index].records[database.members[index].records.Length - 1].providerName = Console.ReadLine();
+            Console.WriteLine("Enter the number of the service provided");
+            database.members[index].records[database.members[index].records.Length - 1].service = Console.ReadLine();
+        }
+
 
         //Helper function to check if user provided valid input. The first argument
         //is a string representation of the user input. The second argument is the int representation of
@@ -234,6 +267,7 @@ namespace ChocAn
                     }
                     found = true;
                     --mNumMembers;
+                    database.save2disk(database);
                 }
                 i++;
             }
@@ -295,6 +329,7 @@ namespace ChocAn
                     }
                     found = true;
                     --mNumProviders;
+                    database.save2disk(database);
                 }
                 i++;
             }
@@ -397,9 +432,11 @@ namespace ChocAn
             database.members[mNumMembers].state = state;
             database.members[mNumMembers].zip = zip;
             database.members[mNumMembers].status = (Database.Validity)0;
-            database.members[mNumMembers].records = null;
             database.members[mNumMembers].number = id;
+            database.members[mNumMembers].records = new Database.MemberRecords[50];
             mNumMembers++;
+            database.save2disk(database);
+            Console.WriteLine("Member was successfully created\n");
         }
 
         //Creates a provider account by taking the database and the provider fields
@@ -412,11 +449,12 @@ namespace ChocAn
             database.providers[mNumProviders].zip = zip;
             database.providers[mNumProviders].consultations = 0;
             database.providers[mNumProviders].totalFee = 0;
-            database.providers[mNumProviders].records = null;
+            database.providers[mNumProviders].records = new Database.ProviderRecords[50];
             database.providers[mNumProviders].number = id;
             mNumProviders++;
+            database.save2disk(database);
+            Console.WriteLine("Provider was successfully created\n");
         }
-
 
         //Generate a random  9 digit id number.
         //Regenerate id if match has NOT been tested
@@ -428,7 +466,7 @@ namespace ChocAn
 
             if (type == "Member")
             {
-                while (database.members[i].number != 0)
+                while (database.members[i].name != null)
                 {
                     //if random number matches number in database
                     //reset counter and generates new random number
@@ -444,7 +482,7 @@ namespace ChocAn
             else if (type == "Provider")
             {
 
-                while (database.providers[i].number != 0)
+                while (database.providers[i].name != null)
                 {
                     //if random number matches number in database
                     //reset counter and generates new random number
@@ -452,6 +490,7 @@ namespace ChocAn
                     {
                         i = 0;
                         randNum = rand.Next(100000000, 999999999);
+                     
                     }
                     else
                         i++;
@@ -459,7 +498,7 @@ namespace ChocAn
             }
             else
                 return -1;
-
+            Console.WriteLine("moving onto next account\n");
             return randNum;
         }
 
@@ -509,11 +548,11 @@ namespace ChocAn
         private static void PopulateAccounts(Database database)
         {
             //providers
-            CreateProvider(database, "Steve Harvey", "123 fake st", "Tigard", "OR", 97223, GenerateID(database, "Provider"));
-            CreateProvider(database, "Jennifer Montano", "2060 Hide A Way Road", "Santa Clara", "CA", 95050, GenerateID(database, "Provider"));
-            CreateProvider(database, "David Smith", "2174 Jehovah Drive", "Rocky Mount", "VA", 24151, GenerateID(database, "Provider"));
-            CreateProvider(database, "Jared Williams", "1151 Khale Street", "Murrells Inlet", "SC", 29576, GenerateID(database, "Provider"));
-            CreateProvider(database, "Ann Guajardo", "126 Valley Drive", "Norristown", "PA", 19403, GenerateID(database, "Provider"));
+           // CreateProvider(database, "Steve Harvey", "123 fake st", "Tigard", "OR", 97223, GenerateID(database, "Provider"));
+           // CreateProvider(database, "Jennifer Montano", "2060 Hide A Way Road", "Santa Clara", "CA", 95050, GenerateID(database, "Provider"));
+          //  CreateProvider(database, "David Smith", "2174 Jehovah Drive", "Rocky Mount", "VA", 24151, GenerateID(database, "Provider"));
+          //  CreateProvider(database, "Jared Williams", "1151 Khale Street", "Murrells Inlet", "SC", 29576, GenerateID(database, "Provider"));
+          //  CreateProvider(database, "Ann Guajardo", "126 Valley Drive", "Norristown", "PA", 19403, GenerateID(database, "Provider"));
             //members
             CreateMember(database, "Lisa J Macklin", "4429 Jerry Dove Drive", "Myrtle Beach", "SC", 29577, GenerateID(database, "Member"));
             CreateMember(database, "Mary B Kirkland", "1703 Point Street", "Chicago", "IL", 60620, GenerateID(database, "Member"));
@@ -521,6 +560,28 @@ namespace ChocAn
             CreateMember(database, "Lorraine J Mayer", "2849 Heritage Road", "Madera", "CA", 93638, GenerateID(database, "Member"));
             CreateMember(database, "David R Kean", "1146 Hickman Street", "Chicago", "IL", 60654, GenerateID(database, "Member"));
 
+        }
+
+        private static bool isInDatabase(Database database, string type, int id)
+        {
+            bool found = false;
+            if(type == "Member")
+            {
+               for(int i=0; i < mNumMembers; i++)
+                {
+                    if (database.members[i].number == id)
+                        found = true;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < mNumProviders; i++)
+                {
+                    if (database.providers[i].number == id)
+                        found = true;
+                }
+            }
+            return found;
         }
     }
 }
