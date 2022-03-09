@@ -28,9 +28,9 @@ namespace ChocAn
             {
                 //Main menu prompt -----
                 Console.WriteLine("Select one of the options\n");
-                Console.WriteLine("1. Fill the first 5 slots with garbage for testing.\n");
+                Console.WriteLine("1. Fill the first 5 slots with predictable garbage for testing.\n");
                 Console.WriteLine("2. List provider info and fees due.\n");
-                Console.WriteLine("3. Exit back too terminal menu.\n");
+                Console.WriteLine("3. Exit back to terminal menu.\n");
                 tempString = Console.ReadLine();
                 //Main menu prompt ^^^^^
                 //check if the user provided valid input -----
@@ -112,7 +112,7 @@ namespace ChocAn
                 //check if the user provided valid input -----
                 while (!ValidInput(tempSA, out ii, 2))
                 {
-                    Console.WriteLine("Please enter 1 too add garbage or 2 to stop adding garbage.\n");
+                    Console.WriteLine("Please enter 1 to add garbage or 2 to stop adding garbage.\n");
                     Console.Out.Flush();
                     tempSA = Console.ReadLine();
                 } //check if the user provided valid input ^^^^^
