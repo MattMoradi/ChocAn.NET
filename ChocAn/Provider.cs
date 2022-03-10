@@ -111,11 +111,6 @@ namespace ChocAn
         }
         public static void Bill(Database database)
         {
-            database.members[0].name = "Henry";
-            database.members[0].number = 444;
-            database.providers[0].name = "Freddy";
-            database.providers[0].number = 421;
-
             Console.Clear();
             if (MemberNumValid == false) ValidateMember(database);
             Console.Clear();
