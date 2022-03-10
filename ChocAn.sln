@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChocAn", "ChocAn\ChocAn.csproj", "{71B18D05-F3C4-4711-9ED1-98F2D368C98F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{4D9C6D12-B1A5-4B5B-A252-F33236187461}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{4D9C6D12-B1A5-4B5B-A252-F33236187461}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
