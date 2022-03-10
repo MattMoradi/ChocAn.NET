@@ -182,10 +182,10 @@ namespace ChocAn
                 {
                     while (!quit)
                     {
-                        Console.WriteLine("\nYou haven't entered an existing service code.");
-                        Console.WriteLine("To request Provider Directory, enter 2.");
-                        Console.WriteLine("To enter the service code, enter 3.");
-                        Console.WriteLine("To go back to the main provider menu, enter 4");
+                        Console.WriteLine("Select an option:\n");
+                        Console.WriteLine("2) To request Provider Directory.");
+                        Console.WriteLine("3) To enter the service code.");
+                        Console.WriteLine("4) To go back to the main provider menu");
                         var input = Console.ReadLine();
                         
                         if (input == "2") DisplayDirectory();
