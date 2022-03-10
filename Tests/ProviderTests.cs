@@ -14,15 +14,6 @@ namespace Tests
     {
 
 
-        private readonly ITestOutputHelper Output;
-        private readonly Database database;
-
-
-        public ProviderTests(ITestOutputHelper Output)
-        {
-            this.Output = Output;
-
-        }
         
         [Fact]
         public void ValidateMemberTestSuspended()
