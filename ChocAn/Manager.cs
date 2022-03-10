@@ -180,7 +180,6 @@ namespace ChocAn
                     Console.WriteLine("Done entering junk data.");
                 }
             }
-            Console.WriteLine("End of data.");
         }
 
         private static void FunctionB(Database.Providers[] providers)                 //Display names, provider numbers, consultations, and total fees
