@@ -59,7 +59,6 @@ namespace ChocAn
                         break;
                 }
             }
-
         }
         public static void ValidateMember(Database database)
         {
@@ -95,9 +94,7 @@ namespace ChocAn
                     var input = Console.ReadLine();
                     if (input == "0") quit = true;
                 }
-
             }
-
         }
         public static void ValidateMemberSearch(Database database)
         {
@@ -114,11 +111,9 @@ namespace ChocAn
         }
         public static void Bill(Database database)
         {
-            
             Console.Clear();
             if (MemberNumValid == false) ValidateMember(database);
             Console.Clear();
-
 
             if (MemberNumValid && !providerFound)
             {
@@ -158,6 +153,7 @@ namespace ChocAn
                 bool quit = false;
                 Console.WriteLine("If you know the service code and want to enter it now, enter 1.");
                 Console.Write("Otherwise, enter 2 to request Provider Directory:");
+                Console.Write("Input Selection: ");
                 var input1 = Console.ReadLine();
                 int serviceCodeInput = 0;
                 bool serviceCodeValid = false;
@@ -185,7 +181,8 @@ namespace ChocAn
                         Console.WriteLine("Select an option:\n");
                         Console.WriteLine("2) To request Provider Directory.");
                         Console.WriteLine("3) To enter the service code.");
-                        Console.WriteLine("4) To go back to the main provider menu");
+                        Console.WriteLine("4) To go back to the main provider menu.");
+                        Console.Write("Input Selection: ");
                         var input = Console.ReadLine();
                         
                         if (input == "2") DisplayDirectory();
@@ -355,9 +352,7 @@ namespace ChocAn
                 Console.ReadKey();
                 Console.Write("Press any key to go back to the main provider menu:");
             }
-
         }
-
         public static double TotalFees(Database database)
         {
             if (!providerFound)
@@ -390,7 +385,6 @@ namespace ChocAn
                     Console.ReadKey();
                 }
             }
-
             return totalfees;
         }
         public static double TotalFeesCalc(Database database)
@@ -407,6 +401,5 @@ namespace ChocAn
 
             return totalfees;
         }
-
     }
 }

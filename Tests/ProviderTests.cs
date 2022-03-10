@@ -31,7 +31,6 @@ namespace Tests
             Provider.memberNumInput = 543;
             Provider.ValidateMemberSearch(database);
             Assert.Equal("0", Provider.memberstatus);
-
         }
         [Fact]
         public void ValidateMemberTestValidated()
@@ -51,7 +50,6 @@ namespace Tests
             Provider.memberNumInput = 333;
             Provider.ValidateMemberSearch(database);
             Assert.Equal("", Provider.memberstatus);
-
         }
         
         [Fact]
