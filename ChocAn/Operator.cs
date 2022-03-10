@@ -15,7 +15,6 @@ namespace ChocAn
             Console.Clear();
             Console.WriteLine("ChocAn.NET Terminal v1.0\n");
             Console.WriteLine("Hello Operator!");
-            PopulateAccounts(database);
             MainMenu(database);
         }
 
@@ -34,10 +33,9 @@ namespace ChocAn
                 Console.WriteLine("1. Modify a member\n");
                 Console.WriteLine("2. Modify a provider\n");
                 Console.WriteLine("3. Exit\n");
-                Console.WriteLine("4. Display Database\n");//will be removed when testing is done
                 stringSelection = Console.ReadLine();
 
-                while (!ValidInput(stringSelection, out intSelection, 4))
+                while (!ValidInput(stringSelection, out intSelection, 3))
                 {
                     Console.WriteLine("Please enter a valid option\n");
                     stringSelection = Console.ReadLine();
@@ -55,9 +53,6 @@ namespace ChocAn
                         break;
                     case 3:
                         isDone = true;
-                        break;
-                    case 4:
-                        DisplayDatabase(database);
                         break;
                     default:
                         {
@@ -1264,90 +1259,5 @@ namespace ChocAn
                 return foundAndWanted;
             }
         }
-
-        //Display the content of the database for testing
-        private static void DisplayDatabase(Database database)
-        {
-            int members = 0;
-            int providers = 0;
-            int i = 0;
-            int j = 0;
-            while (database.members[i].address != null)
-            {
-                Console.WriteLine("Name: " + database.members[i].name);
-                Console.WriteLine("Address: " + database.members[i].address);
-                Console.WriteLine("City: " + database.members[i].city);
-                Console.WriteLine("State: " + database.members[i].state);
-                Console.WriteLine("Zip: " + database.members[i].zip);
-                Console.WriteLine("Number: " + database.members[i].number);
-                Console.WriteLine("Validity: " + database.members[i].status);
-                while (database.members[i].records[j].providerName != null)
-                {
-                    Console.WriteLine("\n-_-_-Record-_-_-");
-                    Console.WriteLine("Provider name " + database.members[i].records[j].providerName);
-                    Console.WriteLine("Service  " + database.members[i].records[j].service);
-                    Console.WriteLine("Service date " + database.members[i].records[j].date);
-                    ++j;
-                }
-                j = 0;
-                Console.WriteLine("\n");
-                i++;
-                ++members;
-            }
-
-            i = 0;
-            Console.WriteLine("\n-_-Providers-_-\n");
-
-            while (database.providers[i].address != null)
-            {
-                Console.WriteLine("Name: " + database.providers[i].name);
-                Console.WriteLine("Address: " + database.providers[i].address);
-                Console.WriteLine("City: " + database.providers[i].city);
-                Console.WriteLine("State: " + database.providers[i].state);
-                Console.WriteLine("Zip: " + database.providers[i].zip);
-                Console.WriteLine("Number: " + database.providers[i].number);
-                Console.WriteLine("\n");
-                while (database.providers[i].records[j].memberName != null)
-                {
-                    Console.WriteLine("\n-_-_-Record-_-_-");
-                    Console.WriteLine("member name " + database.providers[i].records[j].memberName);
-                    Console.WriteLine("member number  " + database.providers[i].records[j].memberNumber);
-                    Console.WriteLine("Service code " + database.providers[i].records[j].serviceCode);
-                    Console.WriteLine("Computer time stamp " + database.providers[i].records[j].timestamp);
-                    Console.WriteLine("Date " + database.providers[i].records[j].date);
-                    Console.WriteLine("Fee " + database.providers[i].records[j].fee);
-                    Console.WriteLine("Comment " + database.providers[i].records[j].comment);
-
-                    ++j;
-                }
-                j = 0;
-                Console.WriteLine("\n");
-                i++;
-                ++providers;
-            }
-            int total = providers + members;
-            Console.WriteLine("Members displayed: " + members + "\n");
-            Console.WriteLine("Providers displayed: " + providers + "\n");
-            Console.WriteLine("Total displayed: " + total + "\n");
-        }
-
-        //Test function to populate member and provider accounts. This function will be removed when testing is completed
-        private static void PopulateAccounts(Database database)
-        {
-            //providers
-            CreateProvider(database, "Steve Harvey", "123 fake st", "Tigard", "OR", 97223, GenerateID(database, "Provider"));
-            CreateProvider(database, "Jennifer Montano", "2060 Hide A Way Road", "Santa Clara", "CA", 95050, GenerateID(database, "Provider"));
-            // CreateProvider(database, "David Smith", "2174 Jehovah Drive", "Rocky Mount", "VA", 24151, GenerateID(database, "Provider"));
-            //  CreateProvider(database, "Jared Williams", "1151 Khale Street", "Murrells Inlet", "SC", 29576, GenerateID(database, "Provider"));
-            // CreateProvider(database, "Ann Guajardo", "126 Valley Drive", "Norristown", "PA", 19403, GenerateID(database, "Provider"));
-            //members
-            CreateMember(database, "Lisa J Macklin", "4429 Jerry Dove Drive", "Myrtle Beach", "SC", 29577, GenerateID(database, "Member"));
-            //CreateMember(database, "Mary B Kirkland", "1703 Point Street", "Chicago", "IL", 60620, GenerateID(database, "Member"));
-            CreateMember(database, "Louis C Quinn", "2603 Short Street", "Austin", "TX", 78660, GenerateID(database, "Member"));
-            // CreateMember(database, "Lorraine J Mayer", "2849 Heritage Road", "Madera", "CA", 93638, GenerateID(database, "Member"));
-            // CreateMember(database, "David R Kean", "1146 Hickman Street", "Chicago", "IL", 60654, GenerateID(database, "Member"));
-
-        }
-
     }
 }
