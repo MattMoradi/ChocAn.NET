@@ -37,7 +37,7 @@ namespace ChocAn
 
                 while (!ValidInput(stringSelection, out intSelection, 3))
                 {
-                    Console.WriteLine("Please enter a valid option\n");
+                    Console.WriteLine("Please enter a valid option (1-3)\n");
                     stringSelection = Console.ReadLine();
                 }
 
@@ -84,7 +84,7 @@ namespace ChocAn
 
                 while (!ValidInput(stringSelection, out intSelection, 4))
                 {
-                    Console.WriteLine("Please enter a valid option\n");
+                    Console.WriteLine("Please enter a valid option(1-4)\n");
                     stringSelection = Console.ReadLine();
                 }
 
@@ -134,7 +134,7 @@ namespace ChocAn
 
                 while (!ValidInput(stringSelection, out intSelection, 4))
                 {
-                    Console.WriteLine("Please enter a valid option\n");
+                    Console.WriteLine("Please enter a valid option (1-4)\n");
                     stringSelection = Console.ReadLine();
                 }
 
@@ -198,7 +198,7 @@ namespace ChocAn
             while (!int.TryParse(memberZipString, out zip) || (int.TryParse(memberZipString, out zip) && zip < 10000)
                 || (int.TryParse(memberZipString, out zip) && zip > 99999))
             {
-                Console.WriteLine("Enter a valid zip code\n");
+                Console.WriteLine("Enter a valid 5 digit zip code\n");
                 memberZipString = Console.ReadLine();
             }
 
@@ -236,10 +236,10 @@ namespace ChocAn
             Console.WriteLine("Enter the nine digit id of the " + type + " you want to remove\n");
             personString = Console.ReadLine();
 
-            while (!int.TryParse(personString, out idToRemove))
+            if (!int.TryParse(personString, out idToRemove))
             {
-                Console.WriteLine("Please enter a valid id number\n");
-                personString = Console.ReadLine();
+                Console.WriteLine("Unable to find a member with that number. Returning to last menu\n");
+                return;
             }
 
             if (type == "Member")
@@ -264,10 +264,10 @@ namespace ChocAn
             Console.WriteLine("Enter the nine digit id of the " + type + " you want to add a record to\n");
             personString = Console.ReadLine();
 
-            while (!IsWantedInDatabase(database, type, personString, out accountIndex))
+            if (!IsWantedInDatabase(database, type, personString, out accountIndex))
             {
-                Console.WriteLine("Please enter a valid id number\n");
-                personString = Console.ReadLine();
+                Console.WriteLine("Unable to find a " + type + " with that number. Returning to last menu\n");
+                return;
             }
 
             if (type == "Member")
@@ -292,10 +292,10 @@ namespace ChocAn
             Console.WriteLine("Enter the nine digit id of the " + type + " you want to add a record to\n");
             personString = Console.ReadLine();
 
-            while (!IsWantedInDatabase(database, type, personString, out accountIndex))
+            if (!IsWantedInDatabase(database, type, personString, out accountIndex))
             {
-                Console.WriteLine("Please enter a valid id number\n");
-                personString = Console.ReadLine();
+                Console.WriteLine("Unable to find a " + type + " with that number. Returning to last menu\n");
+                return;
             }
 
             if (type == "Member")
@@ -394,7 +394,6 @@ namespace ChocAn
                 return;
             }
 
-
             for (int i = 0; i < lastEl; i++)
             {
                 count += 1;
@@ -459,7 +458,7 @@ namespace ChocAn
 
                 while (!ValidInput(stringSelection, out intSelection, 4))
                 {
-                    Console.WriteLine("Please enter a valid option\n");
+                    Console.WriteLine("Please enter a valid option (1-4)\n");
                     stringSelection = Console.ReadLine();
                 }
 
@@ -505,10 +504,11 @@ namespace ChocAn
             Console.WriteLine("Enter the nine digit id of the " + type + " you want modify a record from\n");
             personString = Console.ReadLine();
 
-            while (!IsWantedInDatabase(database, type, personString, out accountIndex))
+
+            if (!IsWantedInDatabase(database, type, personString, out accountIndex))
             {
-                Console.WriteLine("Please enter a valid id number\n");
-                personString = Console.ReadLine();
+                Console.WriteLine("Unable to find a " + type + " with that number. Returning to last menu\n");
+                return;
             }
 
             if (type == "Member")
@@ -581,7 +581,7 @@ namespace ChocAn
 
             while (!ValidInput(stringChoice, out intChoice, 5))
             {
-                Console.WriteLine("Please enter a valid option\n");
+                Console.WriteLine("Please enter a valid option (1-5)\n");
                 stringChoice = Console.ReadLine();
             }
 
@@ -628,7 +628,7 @@ namespace ChocAn
                       
                         while (!DateTime.TryParse(date, out result))
                         {
-                            Console.WriteLine("Enter a valid date in mm-dd-YYYY format\n");
+                            Console.WriteLine("Enter a valid date in mm-dd-yyyy format\n");
                             date = Console.ReadLine();
                         }
 
@@ -643,7 +643,7 @@ namespace ChocAn
 
                         while (!double.TryParse(feeString, out feeDouble) || (double.TryParse(feeString, out feeDouble) && feeDouble > 99999.99))
                         {
-                            Console.WriteLine("Enter a valid cost for the service\n");
+                            Console.WriteLine("Enter a valid cost for the service ($99,999.99 limit)\n");
                             feeString = Console.ReadLine();
                         }
                         database.providers[index].records[recordIndex - 1].fee = feeDouble;
@@ -653,6 +653,10 @@ namespace ChocAn
                     {
                         Console.WriteLine("Enter a comment about the service (100 character limit)\n");
                         comment = Console.ReadLine();
+
+                        if (comment.Length > 100)
+                            comment = comment.Substring(0, 100);
+
                         database.providers[index].records[recordIndex - 1].comment = comment;
                         break;
                     }
@@ -721,7 +725,7 @@ namespace ChocAn
 
             while (!ValidInput(stringChoice, out intChoice, 3))
             {
-                Console.WriteLine("Please enter a valid option\n");
+                Console.WriteLine("Please enter a valid menu option (1-3)\n");
                 stringChoice = Console.ReadLine();
             }
 
@@ -749,7 +753,7 @@ namespace ChocAn
                         //ensure user provides valid data
                         while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
                         {
-                            Console.WriteLine("Please enter a valid service code\n");
+                            Console.WriteLine("Please enter a valid 6 digit service code\n");
                             serviceCodeString = Console.ReadLine();
                             isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
                             isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
@@ -766,7 +770,7 @@ namespace ChocAn
                         
                         while (!DateTime.TryParse(date, out result))
                         {
-                            Console.WriteLine("Enter a valid date in mm-dd-YYYY format\n");
+                            Console.WriteLine("Enter a valid date in mm-dd-yyyy format\n");
                             date = Console.ReadLine();
                         }
 
@@ -815,12 +819,12 @@ namespace ChocAn
             Console.WriteLine("Enter the nine digit id of the member who recieved the service \n");
             memberIdString = Console.ReadLine();
 
-            while (!IsWantedInDatabase(database, "Member", memberIdString, out memberIndex))
+            if (!IsWantedInDatabase(database, "Member", memberIdString, out memberIndex))
             {
-                Console.WriteLine("Please enter a valid id number\n");
-                memberIdString = Console.ReadLine();
+                Console.WriteLine("Unable to find a member with that number. Returning to last menu\n");
+                return;
             }
-           
+
             Console.WriteLine("Enter the date of the service (mm-dd-yyyy)");
             date = Console.ReadLine();
 
@@ -833,7 +837,7 @@ namespace ChocAn
            date = result.ToString();
 
 
-            Console.WriteLine("Enter the service code of the service");
+            Console.WriteLine("Enter the six digit service code of the service");
             serviceCodeString = Console.ReadLine();
 
             isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
@@ -842,7 +846,7 @@ namespace ChocAn
             //ensure user provides valid data
             while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
             {
-                Console.WriteLine("Please enter a valid service code\n");
+                Console.WriteLine("Please enter a valid 6 digit service code\n");
                 serviceCodeString = Console.ReadLine();
                 isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
                 isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
@@ -867,7 +871,7 @@ namespace ChocAn
 
             while (!double.TryParse(feeString, out feeDouble) || (double.TryParse(feeString, out feeDouble) && feeDouble > 99999.99))
             {
-                Console.WriteLine("Enter a valid cost for the service\n");
+                Console.WriteLine("Enter a valid cost for the service ($99,999.99 limit)\n");
                 feeString = Console.ReadLine();
             }
 
@@ -916,22 +920,22 @@ namespace ChocAn
 
             while (!DateTime.TryParse(date, out result))
             {
-                Console.WriteLine("Enter a valid date in mm-dd-YYYY format\n");
+                Console.WriteLine("Enter a valid date in mm-dd-yyyy format\n");
                 date = Console.ReadLine();
             }
 
             date = result.ToString();
 
-            Console.WriteLine("Enter the number of the provider who provided the serviced for " + database.members[index].name);
+            Console.WriteLine("Enter the 9 digit number of the provider who provided the serviced for " + database.members[index].name);
             providerNumberString = Console.ReadLine();
 
-            while (!IsWantedInDatabase(database, "Provider", providerNumberString, out providerIndex))
+            if (!IsWantedInDatabase(database, "Provider", providerNumberString, out providerIndex))
             {
-                Console.WriteLine("Enter a valid provider number\n");
-                providerNumberString = Console.ReadLine();
+                Console.WriteLine("Unable to find a provider with that number. Returning to last menu\n");
+                return;
             }
 
-            Console.WriteLine("Enter the service code of the service");
+            Console.WriteLine("Enter the 6 digit service code of the service");
             serviceCodeString = Console.ReadLine();
 
             isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
@@ -939,7 +943,7 @@ namespace ChocAn
 
             while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
             {
-                Console.WriteLine("Please enter a valid service code\n");
+                Console.WriteLine("Please enter a valid 6 digit service code\n");
                 serviceCodeString = Console.ReadLine();
                 isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
                 isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
