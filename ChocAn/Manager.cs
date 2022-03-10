@@ -22,21 +22,22 @@ namespace ChocAn
             string tempString = "";
             int tempInt = 0;
             bool menuActive = true;
-            Console.Clear();
             //Looping menu -----
             while (menuActive)
             {
+                Console.Clear();
                 //Main menu prompt -----
                 Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Fill the first 5 slots with predictable garbage for testing.\n");
-                Console.WriteLine("2. List provider info and fees due.\n");
-                Console.WriteLine("3. Exit back to terminal menu.\n");
+                Console.WriteLine("2. List provider info and fees due.\n"); 
+                Console.WriteLine("3. Display Data summary.\n");
+                Console.WriteLine("4. Exit back to terminal menu.\n");
                 tempString = Console.ReadLine();
                 //Main menu prompt ^^^^^
                 //check if the user provided valid input -----
-                while (!ValidInput(tempString, out tempInt, 3))
+                while (!ValidInput(tempString, out tempInt, 4))
                 {
-                    Console.WriteLine("Please enter a valid option such as 1, 2, or 3\n");
+                    Console.WriteLine("Please enter a valid option such as 1, 2, 3, or 4\n");
                     Console.Out.Flush();
                     tempString = Console.ReadLine();
                 } //check if the user provided valid input ^^^^^
@@ -45,16 +46,21 @@ namespace ChocAn
                 switch (tempInt) 
                 {
                     case 1:
-                        Console.WriteLine("Gathering Provider data... \n");
+                        Console.WriteLine("Generating testing garbage data... \n");
                         FunctionA(providers);                //Display provider names, number of fees, and total fees.
                         Console.WriteLine("Returning to manager menu...");
                         break;
                     case 2:
-                        Console.WriteLine("Gathering data summary... \n");
+                        Console.WriteLine("Gathering data... \n");
                         FunctionB(providers);                //Display a summary of the data
                         Console.WriteLine("Returning to manager menu...");
                         break;
                     case 3:
+                        Console.WriteLine("Gathering data summary... ");
+                        FunctionC(providers);
+                        Console.WriteLine("Returning to manager menu...");
+                        break;
+                    case 4:
                         Console.WriteLine("Exit confirmed... \n");
                         menuActive = false;         //The only way to properly exit the menu
                         break;
@@ -93,13 +99,15 @@ namespace ChocAn
         {
             bool runA = true;
             Console.WriteLine("Single line grid display activated...");
-            int i = 0;
+            short i = 0;
             while (i < 5)
             {
                 Console.WriteLine("filling Provider #" + i + " with junk data...");
                 providers[i].name = "freddy" + i;
-                providers[i].number = 421 + i;
-                providers[i].totalFee = 420.99 + i;
+                providers[i].number = 100 + i;
+                providers[i].consultations = i;
+                ++providers[i].consultations;
+                providers[i].totalFee = 1000.10 + i;
                 Console.WriteLine("slot " + i + " filled... ");
                 ++i;
             }
@@ -124,6 +132,7 @@ namespace ChocAn
                     }
                     Console.WriteLine("Next empty provider slot is slot #" + i +"\nEnter the name of the next provider...");
                     providers[i].name = Console.ReadLine();
+
                     Console.WriteLine("Now enter the provider number (up to 999999)...");
                     tempSA = Console.ReadLine();
                     //check if the user provided valid input -----
@@ -134,18 +143,29 @@ namespace ChocAn
                         tempSA = Console.ReadLine();
                     } //check if the user provided valid input ^^^^^
                     providers[i].number = ii;
-                    double iid = 0;
-                    Console.WriteLine("Finally enter the total fees (up to 999999)...");
+
+                    Console.WriteLine("Now enter the number of consultations (up to 999)...");
                     tempSA = Console.ReadLine();
                     //check if the user provided valid input -----
-                    while (!ValidInputD(tempSA, out iid, 9999.99))
+                    while (!ValidInput(tempSA, out ii, 999))
                     {
-                        Console.WriteLine("Please enter a valid option such as any number between 1 and 999999.\n");
+                        Console.WriteLine("Please enter a valid option such as any number between 1 and 999.\n");
+                        Console.Out.Flush();
+                        tempSA = Console.ReadLine();
+                    } //check if the user provided valid input ^^^^^
+                    providers[i].consultations = Convert.ToInt16(ii);
+
+                    double iid = 0;
+                    Console.WriteLine("Finally enter the total fees (up to 999.99)...");
+                    tempSA = Console.ReadLine();
+                    //check if the user provided valid input -----
+                    while (!ValidInputD(tempSA, out iid, 999.99))
+                    {
+                        Console.WriteLine("Please enter a valid option such as any number between 1 and 999.99.\n");
                         Console.Out.Flush();
                         tempSA = Console.ReadLine();
                     } //check if the user provided valid input ^^^^^
                     providers[i].totalFee = iid;
-
                 }
                 if (ii == 2)
                 {
@@ -153,19 +173,19 @@ namespace ChocAn
                     Console.WriteLine("Done entering junk data.");
                 }
             }
-
             Console.WriteLine("End of data.");
         }
 
-        private static void FunctionB(Database.Providers[] providers)                 //Display names, number of cases, and total fees
+        private static void FunctionB(Database.Providers[] providers)                 //Display names, provider numbers, consultations, and total fees
         {
-            Console.WriteLine("Summary display activated... \nProvider, Provider Number, Total Fee");
+            Console.WriteLine("Provider list display activated... \nProvider, Provider Number, Number of consultations (C), Total Fee");
             int j = 0;
             while (providers[j].name != null)
             {
                 Console.WriteLine("...");
                 Console.Write(providers[j].name + ",");
                 Console.Write("#" + providers[j].number + ",");
+                Console.Write("C" + providers[j].consultations + ",");
                 Console.WriteLine("$" + providers[j].totalFee);
                 ++j;
             }
@@ -173,9 +193,24 @@ namespace ChocAn
         }
         private static void FunctionC(Database.Providers[] providers)               //Display a summary of the data organized in a legible format
         {
-            Console.WriteLine("Yo this is function C running....\nIt currently doesn't do anything besides this statement.");
+            int k = 0;
+            short kc = 0;
+            decimal kk = 0;
+            while (providers[k].name != null)
+            {
+                kk += Convert.ToDecimal(providers[k].totalFee);
+                kc += Convert.ToInt16((decimal)providers[k].consultations);
+                ++k;
+            }
+            //Console.WriteLine("Yo this is function C running....\nIt currently doesn't do anything besides this statement.");
+            Math.Round(kk, 2);
+            Console.Out.Flush();
+            Console.WriteLine("There are " + k + " total providers.");
+            Console.WriteLine("There are " + kc + " total consultations.");
+            Console.WriteLine("$" + kk + " Is the total sum of provider fees.");
+            Console.WriteLine("\n\nPress any key to return to the manager menu...");
+            Console.ReadKey();
         }
-
     } //Class Bracket
 } //Namespace Bracket
 
