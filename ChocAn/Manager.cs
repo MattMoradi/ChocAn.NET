@@ -205,18 +205,18 @@ namespace ChocAn
         }
         public static void SummaryGenerator(Database.Providers[] providers, ref int totProv, ref short totCon, ref decimal totSum)               //Display a summary of the data organized in a legible format
         {
-            int k = 0;
-            short kc = 0;
-            decimal kk = 0;
-            while (providers[k].name != null)
+            int totalProv = 0;
+            short totalCon = 0;
+            decimal totalSum = 0;
+            while (providers[totalProv].name != null)
             {
-                kk += Convert.ToDecimal(providers[k].totalFee);
-                kc += Convert.ToInt16((decimal)providers[k].consultations);
-                ++k;
+                totalSum += Convert.ToDecimal(providers[totalProv].totalFee);
+                totalCon += Convert.ToInt16((decimal)providers[totalProv].consultations);
+                ++totalProv;
             }
-            totProv = k;
-            totCon = kc;
-            totSum = kk;
+            totProv = totalProv;
+            totCon = totalCon;
+            totSum = totalSum;
             Console.Out.Flush();
         }
     } //Class Bracket

@@ -17,7 +17,7 @@ namespace ChocAn.Tests
             short expectedProv = 0;
             short j = 1;
             int expectedCon = 0;
-            double expectedSum = 0;
+            decimal expectedSum = 0;
             while (expectedProv < 10)
             {
                 data.providers[expectedProv].name = "test1";
@@ -25,7 +25,7 @@ namespace ChocAn.Tests
                 j += expectedProv;
                 data.providers[expectedProv].consultations = j;
                 data.providers[expectedProv].totalFee = 10.1 + expectedProv;
-                expectedSum += 10.1 + expectedProv;
+                expectedSum += 10.1m + Convert.ToDecimal(expectedProv);
                 expectedCon += j;
                 ++expectedProv;
             }
