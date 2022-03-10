@@ -29,10 +29,11 @@ namespace ChocAn
 
             do
             {
+                Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Modify a member\n");
                 Console.WriteLine("2. Modify a provider\n");
                 Console.WriteLine("3. Exit\n");
-                Console.Write("Select one of the options: ");
+                Console.Write("Input Selection: ");
                 stringSelection = Console.ReadLine();
 
                 while (!ValidInput(stringSelection, out intSelection, 3))
@@ -75,12 +76,12 @@ namespace ChocAn
 
             do
             {
-                
+                Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Add new member\n");
                 Console.WriteLine("2. Remove existing member\n");
                 Console.WriteLine("3. Edit existing member Record\n");
                 Console.WriteLine("4. Exit\n");
-                Console.Write("Select one of the options: ");
+                Console.Write("Input Selection: ");
                 stringSelection = Console.ReadLine();
 
                 while (!ValidInput(stringSelection, out intSelection, 4))
@@ -126,11 +127,12 @@ namespace ChocAn
 
             do
             {
+                Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Add new provider\n");
                 Console.WriteLine("2. Remove existing provider\n");
                 Console.WriteLine("3. Edit existing provider\n");
                 Console.WriteLine("4. Exit\n");
-                Console.Write("Select one of the options: ");
+                Console.Write("Input Selection: ");
                 stringSelection = Console.ReadLine();
 
                 while (!ValidInput(stringSelection, out intSelection, 4))
@@ -450,12 +452,12 @@ namespace ChocAn
 
             do
             {
-                
+                Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Add new record\n");
                 Console.WriteLine("2. Remove existing record\n");
                 Console.WriteLine("3. Modify existing record\n");
                 Console.WriteLine("4. Exit\n");
-                Console.Write("Select one of the options: ");
+                Console.Write("Input Selection: ");
                 stringSelection = Console.ReadLine();
 
                 while (!ValidInput(stringSelection, out intSelection, 4))
@@ -573,13 +575,13 @@ namespace ChocAn
                 selectionString = Console.ReadLine();
             }
 
-            
+            Console.WriteLine("Select one of the options\n");
             Console.WriteLine("1.Member\n");
             Console.WriteLine("2.Service code\n");
             Console.WriteLine("3.Date of the service\n");
             Console.WriteLine("4.Fee\n");
             Console.WriteLine("5.Comment\n");
-            Console.Write("Enter the field number you wish to modify: ");
+            Console.Write("Input Selection: ");
             stringChoice = Console.ReadLine();
 
             while (!ValidInput(stringChoice, out intChoice, 5))
@@ -720,11 +722,11 @@ namespace ChocAn
                 selectionString = Console.ReadLine();
             }
 
-            
+            Console.WriteLine("Select one of the options\n");
             Console.WriteLine("1.Provider's name\n");
             Console.WriteLine("2.Service provided\n");
             Console.WriteLine("3.Date of the service\n");
-            Console.Write("Enter the field number you wish to modify: ");
+            Console.Write("Input Selection: ");
             stringChoice = Console.ReadLine();
 
             while (!ValidInput(stringChoice, out intChoice, 3))
@@ -896,7 +898,6 @@ namespace ChocAn
             database.save2disk(database);
             Console.WriteLine("Provider record was succesfully added\n");
         }
-
 
         //Lets user add a record to an existing member. This function takes the
         //database and the index where the member is located in the database as arguments
