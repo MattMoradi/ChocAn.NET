@@ -140,12 +140,12 @@ namespace ChocAn
                     Console.WriteLine("Next empty provider slot is slot #" + i +"\nEnter the name of the next provider...");
                     providers[i].name = Console.ReadLine();
 
-                    Console.WriteLine("Now enter the provider number (up to 999999)...");
+                    Console.WriteLine("Now enter the provider number (up to 999999999)...");
                     tempSA = Console.ReadLine();
                     //check if the user provided valid input -----
-                    while (!ValidInput(tempSA, out ii, 999999))
+                    while (!ValidInput(tempSA, out ii, 999999999))
                     {
-                        Console.WriteLine("Please enter a valid option such as any number between 1 and 999999.\n");
+                        Console.WriteLine("Please enter a valid option such as any number between 1 and 999999999.\n");
                         Console.Out.Flush();
                         tempSA = Console.ReadLine();
                     } //check if the user provided valid input ^^^^^
