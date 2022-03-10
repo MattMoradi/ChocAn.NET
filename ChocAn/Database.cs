@@ -157,7 +157,7 @@ namespace ChocAn
             public string date;
             public DateTime timestamp;
             public string memberName;
-            public string memberNumber;
+            public int memberNumber;
             public int serviceCode;
             public double fee;
             public string comment;
