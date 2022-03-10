@@ -1094,6 +1094,7 @@ namespace ChocAn
             mNumMembers++;
             database.save2disk(database);
             Console.WriteLine("Member was successfully created\n");
+            Console.WriteLine(database.members[mNumMembers - 1].name + "'s member id is " + database.members[mNumMembers - 1].number + "\n");
         }
 
         //Creates a provider account by taking the database and the provider fields as arguments
@@ -1111,6 +1112,7 @@ namespace ChocAn
             mNumProviders++;
             database.save2disk(database);
             Console.WriteLine("Provider was successfully created\n");
+            Console.WriteLine(database.providers[mNumProviders - 1].name + "'s provider id is " + database.providers[mNumProviders - 1].number+ "\n");
         }
 
         //Helper function to check if user provided valid input. The first argument
