@@ -12,8 +12,6 @@ namespace Tests
 {
     public class ProviderTests
     {
-
-
         
         [Fact]
         public void ValidateMemberTestSuspended()

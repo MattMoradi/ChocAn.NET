@@ -360,22 +360,37 @@ namespace ChocAn
 
         public static double TotalFees(Database database)
         {
+            if (!providerFound)
+            {
+                Console.Write("Enter your provider number:");
+                providerNumbInput = Convert.ToInt32(Console.ReadLine());
 
-
-
+                FindProvider(database);
+                if (!providerFound)
+                {
+                    Console.WriteLine("Wrong provider number.");
+                    Console.Write("Press any key to go back to the main provider menu:");
+                    Console.ReadKey();
+                }
+            }
             double totalfees = 0;
-            if (database.providers[0].records != null)
+            if(providerFound)
             {
-                TotalFeesCalc(database);
-                Console.Write("Press any key to go back to the main provider menu:");
-                Console.ReadKey();
+                if (database.providers[0].records != null)
+                {
+
+                    TotalFeesCalc(database);
+                    Console.Write("Press any key to go back to the main provider menu:");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("There are no fees to total.");
+                    Console.Write("Press any key to continue");
+                    Console.ReadKey();
+                }
             }
-            else
-            {
-                Console.WriteLine("There are no fees to total.");
-                Console.Write("Press any key to continue");
-                Console.ReadKey();
-            }
+
             return totalfees;
         }
         public static double TotalFeesCalc(Database database)
