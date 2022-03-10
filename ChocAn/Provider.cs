@@ -111,6 +111,11 @@ namespace ChocAn
         }
         public static void Bill(Database database)
         {
+            database.members[0].name = "Henry";
+            database.members[0].number = 444;
+            database.providers[0].name = "Freddy";
+            database.providers[0].number = 421;
+
             Console.Clear();
             if (MemberNumValid == false) ValidateMember(database);
             Console.Clear();
@@ -178,7 +183,7 @@ namespace ChocAn
                 {
                     while (!quit)
                     {
-                        Console.WriteLine("Select an option:\n");
+                        Console.WriteLine("\nSelect an option:\n");
                         Console.WriteLine("2) To request Provider Directory.");
                         Console.WriteLine("3) To enter the service code.");
                         Console.WriteLine("4) To go back to the main provider menu.");
@@ -186,9 +191,9 @@ namespace ChocAn
                         var input = Console.ReadLine();
                         
                         if (input == "2") DisplayDirectory();
-                        if (input == "3" || input1 == "2")
+                        if (input == "3" || input1 == "2" && input != "4")
                         {
-                            Console.Write("Enter the service code:");
+                            Console.Write("\nEnter the service code:");
                             serviceCodeInput = Convert.ToInt32(Console.ReadLine());
                             foreach (var data in Enum.GetNames(typeof(Database.ProviderDirectory)))
                             {
