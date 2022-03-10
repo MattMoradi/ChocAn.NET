@@ -32,7 +32,7 @@ namespace ChocAn.Tests
             int actualProv = 0;
             short actualCon = 0;
             decimal actualSum = 0;
-            Manager.SummaryGenerator(data.providers, actualProv, actualCon, actualSum);
+            Manager.SummaryGenerator(data.providers, ref actualProv, ref actualCon, ref actualSum);
             Assert.Equals(expectedSum, actualSum);
             Assert.Equals(expectedCon, actualCon);
             Assert.Equals(expectedProv, actualProv);

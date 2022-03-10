@@ -65,7 +65,7 @@ namespace ChocAn
                         int totalProv = 0;
                         short totalCons = 0;
                         decimal totalSum = 0;
-                        SummaryGenerator(providers, totalProv, totalCons, totalSum);               //Display the data summary
+                        SummaryGenerator(providers, ref totalProv, ref totalCons, ref totalSum);               //Fill the fields with the requested data
                         Console.WriteLine("There are " + totalProv + " total providers.");
                         Console.WriteLine("There are " + totalCons + " total consultations.");
                         Console.WriteLine("$" + totalSum + " Is the total sum of provider fees.");
@@ -203,7 +203,7 @@ namespace ChocAn
             }
             Console.WriteLine("End of data.");
         }
-        public static void SummaryGenerator(Database.Providers[] providers, int totProv, short totCon, decimal totSum)               //Display a summary of the data organized in a legible format
+        public static void SummaryGenerator(Database.Providers[] providers, ref int totProv, ref short totCon, ref decimal totSum)               //Display a summary of the data organized in a legible format
         {
             int k = 0;
             short kc = 0;
@@ -214,7 +214,6 @@ namespace ChocAn
                 kc += Convert.ToInt16((decimal)providers[k].consultations);
                 ++k;
             }
-            //Console.WriteLine("Yo this is function C running....\nIt currently doesn't do anything besides this statement.");
             totProv = k;
             totCon = kc;
             totSum = kk;
