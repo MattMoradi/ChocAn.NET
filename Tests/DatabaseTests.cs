@@ -7,33 +7,41 @@ using Xunit.Abstractions;
 
 namespace Tests
 {
-    public class Memberstest
+    public class DatabaseTests
     {
-        private readonly Database.Members[] members = new Database.Members[999];
+        private readonly ITestOutputHelper Output;
+        private readonly char slash;
+        private readonly Database database;
+
+        public DatabaseTests(ITestOutputHelper Output)
+        {
+            this.Output = Output;
+            slash = Path.DirectorySeparatorChar;
+            database = new Database();
+        }
 
         [Fact]
-        public void Validtest1()
+        public void ProviderDirectoryTest()
         {
-            members[0].status = (Database.Validity)0;
-            int expected = 1;
-            int actual = Member.is_valid(members, 0);
-            Assert.Equal(expected, actual);
+
+            Assert.True(File.Exists("ProviderDirectory.txt"));
+            Output.WriteLine(Environment.CurrentDirectory + slash + "ProviderDirectory.txt");
         }
+
         [Fact]
-        public void Validtest2()
+        public void EFTTest()
         {
-            members[3].status = (Database.Validity)2;
-            int expected = 2;
-            int actual = Member.is_valid(members, 3);
-            Assert.Equal(expected, actual);
+            database.writeEFT(database);
+            Assert.True(File.Exists("EFT.txt"));
         }
+
         [Fact]
-        public void Validtest3()
+        public void DBSaveTest()
         {
-            members[0].status = (Database.Validity)1;
-            int expected = 3;
-            int actual = Member.is_valid(members, 0);
-            Assert.Equal(expected, actual);
+            database.save2disk(database);
+            Assert.True(Directory.Exists("Members"));
+            Assert.True(Directory.Exists("Providers"));
         }
     }
+
 }

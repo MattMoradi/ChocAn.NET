@@ -166,9 +166,8 @@ namespace ChocAn
                     //Convert the records date to Datetime to sort by dates
                     if (DateTime.TryParse(members[member_i].records[i].date, out d1) && (d1 == dates[d]))
                     {
-                        Console.WriteLine("\n\n\tRecord {" + count + "}");
-                        Console.WriteLine("\nDate: " + members[member_i].records[i].date);
-                        Console.WriteLine("\nProvider namer: " + members[member_i].records[i].providerName);
+                        Console.WriteLine("\n\n\t ---- Record {" + count + "} ----"); Console.WriteLine("\nDate: " + members[member_i].records[i].date);
+                        Console.WriteLine("\nProvider name: " + members[member_i].records[i].providerName);
                         Console.WriteLine("\nService: " + members[member_i].records[i].service);
                         break;
                     }
