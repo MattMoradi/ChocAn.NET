@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -17,11 +19,12 @@ namespace ChocAn
             MainMenu(database);
         }
 
-        //Displays the main menu to the user
+        //Displays the main menu to the user. This function
+        //takes the database as an argument
         private static void MainMenu(Database database)
         {
-            string stringSelection = "";
-            int intSelection = 0;
+            string stringSelection;
+            int intSelection;
             bool isDone = false;
             Console.Clear();
 
@@ -34,7 +37,6 @@ namespace ChocAn
                 Console.WriteLine("4. Display Database\n");//will be removed when testing is done
                 stringSelection = Console.ReadLine();
 
-                //check if user provided valid input
                 while (!ValidInput(stringSelection, out intSelection, 4))
                 {
                     Console.WriteLine("Please enter a valid option\n");
@@ -67,11 +69,12 @@ namespace ChocAn
             } while (!isDone);
         }
 
-        //Displays the member options to the user
+        //Displays the member menu to the user. This function
+        //takes the database as an argument
         private static void MemberMenu(Database database)
         {
-            string stringSelection = "";
-            int intSelection = 0;
+            string stringSelection;
+            int intSelection;
             bool isDone = false;
             Console.Clear();
 
@@ -80,11 +83,10 @@ namespace ChocAn
                 Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Add new member\n");
                 Console.WriteLine("2. Remove existing member\n");
-                Console.WriteLine("3. Edit existing member\n");
+                Console.WriteLine("3. Edit existing member Record\n");
                 Console.WriteLine("4. Exit\n");
                 stringSelection = Console.ReadLine();
 
-                //check if user provided valid input
                 while (!ValidInput(stringSelection, out intSelection, 4))
                 {
                     Console.WriteLine("Please enter a valid option\n");
@@ -93,17 +95,16 @@ namespace ChocAn
 
                 Console.Clear();
 
-                switch (intSelection) 
+                switch (intSelection)
                 {
                     case 1:
-                        AddPerson(database,"Member");
+                        AddPerson(database, "Member");
                         break;
                     case 2:
-                        //Console.WriteLine("Remove member not implemented\n");
                         RemovePerson(database, "Member");
                         break;
                     case 3:
-                        Console.WriteLine("Edit member not implemented\n");
+                        RecordModificationMenu(database, "Member");
                         break;
                     case 4:
                         isDone = true;
@@ -118,7 +119,8 @@ namespace ChocAn
             } while (!isDone);
         }
 
-        //Displays that provider options to the user
+        //Displays that provider menu to the user.This function
+        //takes the database as an argument
         private static void ProviderMenu(Database database)
         {
             string stringSelection;
@@ -135,7 +137,6 @@ namespace ChocAn
                 Console.WriteLine("4. Exit\n");
                 stringSelection = Console.ReadLine();
 
-                //check if user provided valid input
                 while (!ValidInput(stringSelection, out intSelection, 4))
                 {
                     Console.WriteLine("Please enter a valid option\n");
@@ -150,11 +151,10 @@ namespace ChocAn
                         AddPerson(database, "Provider");
                         break;
                     case 2:
-                        //  Console.WriteLine("Remove provider not implemented\n");
                         RemovePerson(database, "Provider");
                         break;
                     case 3:
-                        Console.WriteLine("Edit provider not implemented\n");
+                        RecordModificationMenu(database, "Provider");
                         break;
                     case 4:
                         isDone = true;
@@ -169,62 +169,808 @@ namespace ChocAn
             } while (!isDone);
         }
 
-        //work in prog
-        private static void AddRecord(Database database, string type)
+        //Get user input to add either a member or provider to the database.
+        //This function takes the database and a string that represents the type of
+        //account that should be added as arguments
+        private static void AddPerson(Database database, string type)
         {
-            int idRecordToAdd = 0;
+            int accountId;
+            int zip;
+            string memberZipString;
+            string accountType;
+            string name;
+            string address;
+            string city;
+            string state;
+
+            //check what kind of account is being created
+            if (type == "Member")
+                accountType = "Member";
+            else
+                accountType = "Provider";
+
+            Console.WriteLine("Enter the " + accountType + "'s first and last name (25 character limit)\n");
+            name = Console.ReadLine();
+            Console.WriteLine("Enter the " + accountType + "'s address (25 character limit)\n");
+            address = Console.ReadLine();
+            Console.WriteLine("Enter the " + accountType + "'s city (14 character limit)\n");
+            city = Console.ReadLine();
+            Console.WriteLine("Enter the " + accountType + "'s two letter state abbreviation\n");
+            state = Console.ReadLine();
+            Console.WriteLine("Enter the " + accountType + "'s zip code\n");
+            memberZipString = Console.ReadLine();
+
+            while (!int.TryParse(memberZipString, out zip) || (int.TryParse(memberZipString, out zip) && zip < 10000)
+                || (int.TryParse(memberZipString, out zip) && zip > 99999))
+            {
+                Console.WriteLine("Enter a valid zip code\n");
+                memberZipString = Console.ReadLine();
+            }
+
+            accountId = GenerateID(database, accountType);
+
+            if (name.Length > 25)
+                name = name.Substring(0, 25);
+            if (address.Length > 25)
+                address = address.Substring(0, 25);
+            if (city.Length > 14)
+                city = city.Substring(0, 14);
+            if (state.Length > 2)
+                state = state.Substring(0, 2);
+
+            if (type == "Member")
+                CreateMember(database, name, address, city, state, zip, accountId);
+            else
+                CreateProvider(database, name, address, city, state, zip, accountId);
+        }
+
+        //Get user input to remove either a member or provider from the database.
+        //This function takes the database and a string that represents the type of
+        //account that should be removed as arguments
+        private static void RemovePerson(Database database, string type)
+        {
+            int idToRemove;
             string personString;
 
-            Console.WriteLine("Enter the nine digit id of the " + type + " you want to add a record to\n");
+            if ((type == "Provider" && database.providers[0].name == null) || (type == "Member" && database.members[0].name == null))
+            {
+                Console.WriteLine("There are no " + type + "s to remove a record from. Returning to last menu\n");
+                return;
+            }
+
+            Console.WriteLine("Enter the nine digit id of the " + type + " you want to remove\n");
             personString = Console.ReadLine();
 
-            //ensure user provides valid data
-            while (!int.TryParse(personString, out idRecordToAdd) && !isInDatabase(database,type, idRecordToAdd))
+            while (!int.TryParse(personString, out idToRemove))
             {
                 Console.WriteLine("Please enter a valid id number\n");
                 personString = Console.ReadLine();
             }
 
             if (type == "Member")
-                AddMemberRecord(database, idRecordToAdd);
+                RemoveMember(database, idToRemove);
             else
-                RemvoveProvider(database, idRecordToAdd);
+                RemvoveProvider(database, idToRemove);
         }
 
+        //Gets the account type and number of a member or provider to add a record to.
+        //This function takes the database and the account type as a string as arguments.
+        private static void AddRecord(Database database, string type)
+        {
+            string personString;
+            int accountIndex;
+
+            if ((type == "Provider" && database.providers[0].name == null) || (type == "Member" && database.members[0].name == null))
+            {
+                Console.WriteLine("There are no " + type + "s to add a record to. Returning to last menu\n");
+                return;
+            }
+
+            Console.WriteLine("Enter the nine digit id of the " + type + " you want to add a record to\n");
+            personString = Console.ReadLine();
+
+            while (!IsWantedInDatabase(database, type, personString, out accountIndex))
+            {
+                Console.WriteLine("Please enter a valid id number\n");
+                personString = Console.ReadLine();
+            }
+
+            if (type == "Member")
+                AddMemberRecord(database, accountIndex);
+            else
+                AddProviderRecord(database, accountIndex);
+        }
+
+        //Lets user remove a record from either a member or provider. This function
+        //takes the database and the account type as a string as arguments.
+        private static void RemoveRecord(Database database, string type)
+        {
+            string personString;
+            int accountIndex;
+
+            if ((type == "Provider" && database.providers[0].name == null) || (type == "Member" && database.members[0].name == null))
+            {
+                Console.WriteLine("There are no " + type + "s to remove a record from. Returning to last menu\n");
+                return;
+            }
+
+            Console.WriteLine("Enter the nine digit id of the " + type + " you want to add a record to\n");
+            personString = Console.ReadLine();
+
+            while (!IsWantedInDatabase(database, type, personString, out accountIndex))
+            {
+                Console.WriteLine("Please enter a valid id number\n");
+                personString = Console.ReadLine();
+            }
+
+            if (type == "Member")
+                RemoveMemberRecord(database, accountIndex);
+            else
+                RemoveProviderRecord(database, accountIndex);
+        }
+
+        //Lets user remove a record from a provider.This function takes the database
+        //and the index of where the provider is located in the database as arguments
+        private static void RemoveProviderRecord(Database database, int index)
+        {
+            string selectionString;
+            int selectionInt;
+            int count = 0;
+
+            //find location of first null element in record array
+            int lastEl = database.providers[index].records.Count(x => x.memberName != null);
+
+            if (database.providers[index].records[0].memberName == null)
+            {
+                Console.WriteLine("This provider has no records to remove. Returning to last menu\n");
+                return;
+            }
+
+            for (int i = 0; i < lastEl; i++)
+            {
+                count += 1;
+                Console.WriteLine("Record # " + count);
+                Console.WriteLine("Member Name: " + database.providers[index].records[i].memberName);
+                Console.WriteLine("Member Number: " + database.providers[index].records[i].memberNumber);
+                Console.WriteLine("Service Code: " + database.providers[index].records[i].serviceCode);
+                Console.WriteLine("Date: " + database.providers[index].records[i].date);
+                Console.WriteLine("-_-_-_-_-_-_-_-_-_-_\n");
+            }
+
+            Console.WriteLine("Enter the number of the record you want to remove\n");
+            selectionString = Console.ReadLine();
+
+            while (!int.TryParse(selectionString, out selectionInt) || (int.TryParse(selectionString, out selectionInt) && selectionInt > lastEl)
+                || (int.TryParse(selectionString, out selectionInt) && selectionInt < 1))
+            {
+                Console.WriteLine("Enter a valid record number to remove");
+                selectionString = Console.ReadLine();
+            }
+
+            selectionInt--;
+
+            //check if record being removed is the last element in the array
+            if (selectionInt == lastEl - 1)
+            {
+                database.providers[index].records[selectionInt].date = null;
+                database.providers[index].records[selectionInt].memberName = null;
+                database.providers[index].records[selectionInt].memberNumber = 0;
+                database.providers[index].records[selectionInt].serviceCode = 0;
+                database.providers[index].records[selectionInt].fee = 0;
+                database.providers[index].consultations--;
+                database.providers[index].records[selectionInt].comment = null;
+            }
+            else
+            {//switch element that is being removed with last element's data
+                database.providers[index].records[selectionInt].date = database.providers[index].records[lastEl - 1].date;
+                database.providers[index].records[selectionInt].memberName = database.providers[index].records[lastEl - 1].memberName;
+                database.providers[index].records[selectionInt].memberNumber = database.providers[index].records[lastEl - 1].memberNumber;
+                database.providers[index].records[selectionInt].serviceCode = database.providers[index].records[lastEl - 1].serviceCode;
+                database.providers[index].records[selectionInt].fee = database.providers[index].records[lastEl - 1].fee;
+                database.providers[index].consultations--;
+                database.providers[index].records[selectionInt].comment = database.providers[index].records[lastEl - 1].comment;
+
+                //set last element in record array to null
+                database.providers[index].records[lastEl - 1].date = null;
+                database.providers[index].records[lastEl - 1].memberName = null;
+                database.providers[index].records[lastEl - 1].memberNumber = 0;
+                database.providers[index].records[lastEl - 1].serviceCode = 0;
+                database.providers[index].records[lastEl - 1].fee = 0;
+                database.providers[index].records[lastEl - 1].comment = null;
+            }
+            database.save2disk(database);
+            Console.WriteLine("The record was succesfully removed\n");
+        }
+
+        //lets user remove a record from a member. This function takes the database
+        //and the index of where the member is located in the database as arguments
+        private static void RemoveMemberRecord(Database database, int index)
+        {
+            string selectionString;
+            int selectionInt;
+            int count = 0;
+
+            //find location of first null element in record array
+            int lastEl = database.members[index].records.Count(x => x.providerName != null);
+
+            if (database.members[index].records[0].providerName == null)
+            {
+                Console.WriteLine("This member has no records to remove. Returning to last menu\n");
+                return;
+            }
+
+
+            for (int i = 0; i < lastEl; i++)
+            {
+                count += 1;
+                Console.WriteLine("Record # " + count);
+                Console.WriteLine("Provider Name: " + database.members[index].records[i].providerName);
+                Console.WriteLine("Service: " + database.members[index].records[i].service);
+                Console.WriteLine("Date: " + database.members[index].records[i].date);
+                Console.WriteLine("-_-_-_-_-_-_-_-_-_-_\n");
+            }
+
+            Console.WriteLine("\nEnter the number of the record you want to remove\n");
+            selectionString = Console.ReadLine();
+
+            while (!int.TryParse(selectionString, out selectionInt) || (int.TryParse(selectionString, out selectionInt) && selectionInt > lastEl)
+                || (int.TryParse(selectionString, out selectionInt) && selectionInt < 1))
+            {
+                Console.WriteLine("Enter a valid record number to remove");
+                selectionString = Console.ReadLine();
+            }
+
+            selectionInt--;
+
+            //check if record being removed is the last element in the array
+            if (selectionInt == lastEl - 1)
+            {
+                database.members[index].records[selectionInt].date = null;
+                database.members[index].records[selectionInt].providerName = null;
+                database.members[index].records[selectionInt].service = null;
+            }
+            else
+            {//switch element that is being removed with last element's data
+                database.members[index].records[selectionInt].date = database.members[index].records[lastEl - 1].date;
+                database.members[index].records[selectionInt].providerName = database.members[index].records[lastEl - 1].providerName;
+                database.members[index].records[selectionInt].service = database.members[index].records[lastEl - 1].service;
+
+                //set last element in record array to null
+                database.members[index].records[lastEl - 1].date = null;
+                database.members[index].records[lastEl - 1].providerName = null;
+                database.members[index].records[lastEl - 1].service = null;
+            }
+            database.save2disk(database);
+            Console.WriteLine("The record was succesfully removed\n");
+        }
+
+        //displays the record modification menu to the user. This function takes the database
+        //and a string representation of the account type that will be modified as arguments
+        private static void RecordModificationMenu(Database database, string type)
+        {
+            string stringSelection;
+            int intSelection;
+            bool isDone = false;
+            Console.Clear();
+
+            do
+            {
+                Console.WriteLine("Select one of the options\n");
+                Console.WriteLine("1. Add new record\n");
+                Console.WriteLine("2. Remove existing record\n");
+                Console.WriteLine("3. Modify existing record\n");
+                Console.WriteLine("4. Exit\n");
+                stringSelection = Console.ReadLine();
+
+                while (!ValidInput(stringSelection, out intSelection, 4))
+                {
+                    Console.WriteLine("Please enter a valid option\n");
+                    stringSelection = Console.ReadLine();
+                }
+
+                Console.Clear();
+
+                switch (intSelection)
+                {
+                    case 1:
+                        AddRecord(database, type);
+                        break;
+                    case 2:
+                        RemoveRecord(database, type);
+                        break;
+                    case 3:
+                        ModifyRecord(database, type);
+                        break;
+                    case 4:
+                        isDone = true;
+                        break;
+                    default:
+                        {
+                            Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
+                            isDone = true;
+                            break;
+                        }
+                }
+            } while (!isDone);
+        }
+
+        //Displays the modificy record menu to the user.This function takes the database
+        //and a string representation of the account type that will be modified as arguments
+        private static void ModifyRecord(Database database, string type)
+        {
+            string personString;
+            int accountIndex;
+
+            if ((type == "Provider" && database.providers[0].name == null) || (type == "Member" && database.members[0].name == null))
+            {
+                Console.WriteLine("There are no " + type + "s to modify. Returning to last menu\n");
+                return;
+            }
+
+            Console.WriteLine("Enter the nine digit id of the " + type + " you want modify a record from\n");
+            personString = Console.ReadLine();
+
+            while (!IsWantedInDatabase(database, type, personString, out accountIndex))
+            {
+                Console.WriteLine("Please enter a valid id number\n");
+                personString = Console.ReadLine();
+            }
+
+            if (type == "Member")
+                ModifyMemberRecord(database, accountIndex);
+            else
+                ModifyProviderRecord(database, accountIndex);
+        }
+
+        //Lets user modify a provider record. This function takes the database
+        //and the index of where the member or provider is stored in the database as arguments
+        private static void ModifyProviderRecord(Database database, int index)
+        {
+            string selectionString;
+            int recordIndex;
+            string memberIdString;
+            int memberIndex;
+            int count = 0;
+            string stringChoice;
+            int intChoice;
+            string serviceCodeString;
+            int serviceCodeInt;
+            bool isValidInt;
+            bool isValidService;
+            string date;
+            string feeString;
+            double feeDouble;
+            DateTime result;
+            string comment;
+
+            //find location of first null element in record array
+            int lastEl = database.providers[index].records.Count(x => x.memberName != null);
+
+            if (database.providers[index].records[0].memberName == null)
+            {
+                Console.WriteLine("This provider has no records to modify. Returning to last menu\n");
+                return;
+            }
+
+            for (int i = 0; i < lastEl; i++)
+            {
+                count += 1;
+                Console.WriteLine("Record # " + count);
+                Console.WriteLine("member name " + database.providers[index].records[i].memberName);
+                Console.WriteLine("member number  " + database.providers[index].records[i].memberNumber);
+                Console.WriteLine("Service code " + database.providers[index].records[i].serviceCode);
+                Console.WriteLine("Computer time stamp " + database.providers[index].records[i].timestamp);
+                Console.WriteLine("Date " + database.providers[index].records[i].date);
+                Console.WriteLine("Fee " + database.providers[index].records[i].fee);
+                Console.WriteLine("Comment " + database.providers[index].records[i].comment);
+                Console.WriteLine("-_-_-_-_-_-_-_-_-_-_\n");
+            }
+
+            Console.WriteLine("\nEnter the number of the record you want to remove\n");
+            selectionString = Console.ReadLine();
+
+            while (!int.TryParse(selectionString, out recordIndex) || (int.TryParse(selectionString, out recordIndex) && recordIndex > lastEl)
+                || (int.TryParse(selectionString, out recordIndex) && recordIndex < 1))
+            {
+                Console.WriteLine("Enter a valid record number to modify");
+                selectionString = Console.ReadLine();
+            }
+
+            Console.WriteLine("Which field do you want to modify?\n");
+            Console.WriteLine("1.Member\n");
+            Console.WriteLine("2.Service code\n");
+            Console.WriteLine("3.Date of the service\n");
+            Console.WriteLine("4.Fee\n");
+            Console.WriteLine("5.Comment\n");
+            stringChoice = Console.ReadLine();
+
+            while (!ValidInput(stringChoice, out intChoice, 5))
+            {
+                Console.WriteLine("Please enter a valid option\n");
+                stringChoice = Console.ReadLine();
+            }
+
+            switch (intChoice)
+            {
+                case 1:
+                    {
+                        Console.WriteLine("Enter the nine digit id of the member who recieved the service \n");
+                        memberIdString = Console.ReadLine();
+
+                        while (!IsWantedInDatabase(database, "Member", memberIdString, out memberIndex))
+                        {
+                            Console.WriteLine("Please enter a valid id number\n");
+                            memberIdString = Console.ReadLine();
+                        }
+                        database.providers[index].records[recordIndex - 1].memberName = database.members[memberIndex].name;
+                        database.providers[index].records[recordIndex - 1].memberNumber = database.members[memberIndex].number;
+                        break;
+                    }
+                case 2:
+                    {
+                        Console.WriteLine("Enter the service code for the service");
+                        serviceCodeString = Console.ReadLine();
+                        isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
+                        isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
+
+                        //ensure user provides valid data
+                        while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
+                        {
+                            Console.WriteLine("Please enter a valid service code\n");
+                            serviceCodeString = Console.ReadLine();
+                            isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
+                            isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
+                        }
+
+                        //string service = Enum.GetName(typeof(Database.ProviderDirectory), serviceCodeInt);
+                        database.providers[index].records[recordIndex - 1].serviceCode = serviceCodeInt;
+                        break;
+                    }
+                case 3:
+                    {
+                        Console.WriteLine("Enter the date of the service (mm-dd-yyyy)");
+                        date = Console.ReadLine();
+                      
+                        while (!DateTime.TryParse(date, out result))
+                        {
+                            Console.WriteLine("Enter a valid date in mm-dd-YYYY format\n");
+                            date = Console.ReadLine();
+                        }
+
+                        date = result.ToString();
+                        database.providers[index].records[recordIndex - 1].date = date;
+                        break;
+                    }
+                case 4:
+                    {
+                        Console.WriteLine("Enter the cost of the service ($99,999.99 limit)\n");
+                        feeString = Console.ReadLine();
+
+                        while (!double.TryParse(feeString, out feeDouble) || (double.TryParse(feeString, out feeDouble) && feeDouble > 99999.99))
+                        {
+                            Console.WriteLine("Enter a valid cost for the service\n");
+                            feeString = Console.ReadLine();
+                        }
+                        database.providers[index].records[recordIndex - 1].fee = feeDouble;
+                        break;
+                    }
+                case 5:
+                    {
+                        Console.WriteLine("Enter a comment about the service (100 character limit)\n");
+                        comment = Console.ReadLine();
+                        database.providers[index].records[recordIndex - 1].comment = comment;
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
+                        break;
+                    }
+            }
+            database.save2disk(database);
+            Console.WriteLine("Record was updated");
+        }
+
+        //Lets user modify a member record. This function takes the database
+        //and the index of where the member or provider is stored in the database as arguments
+        private static void ModifyMemberRecord(Database database, int index)
+        {
+            string selectionString;
+            int recordIndex;
+            string providerNumberString;
+            int providerIndex;
+            int count = 0;
+            string stringChoice;
+            int intChoice;
+            string serviceCodeString;
+            int serviceCodeInt;
+            bool isValidInt;
+            bool isValidService;
+            string date;
+            DateTime result;
+
+            //find location of first null element in record array
+            int lastEl = database.members[index].records.Count(x => x.providerName != null);
+
+            if (database.members[index].records[0].providerName == null)
+            {
+                Console.WriteLine("This member has no records to modify. Returning to last menu\n");
+                return;
+            }
+
+            for (int i = 0; i < lastEl; i++)
+            {
+                count += 1;
+                Console.WriteLine("Record # " + count);
+                Console.WriteLine("Provider Name: " + database.members[index].records[i].providerName);
+                Console.WriteLine("Service: " + database.members[index].records[i].service);
+                Console.WriteLine("Date: " + database.members[index].records[i].date);
+                Console.WriteLine("-_-_-_-_-_-_-_-_-_-_\n");
+            }
+
+            Console.WriteLine("Enter the number of the record you want to remove\n");
+            selectionString = Console.ReadLine();
+
+            while (!int.TryParse(selectionString, out recordIndex) || (int.TryParse(selectionString, out recordIndex) && recordIndex > lastEl)
+                || (int.TryParse(selectionString, out recordIndex) && recordIndex < 1))
+            {
+                Console.WriteLine("Enter a valid record number to modify");
+                selectionString = Console.ReadLine();
+            }
+
+            Console.WriteLine("Which field do you want to modify?\n");
+            Console.WriteLine("1.Provider's name\n");
+            Console.WriteLine("2.Service provided\n");
+            Console.WriteLine("3.Date of the service\n");
+            stringChoice = Console.ReadLine();
+
+            while (!ValidInput(stringChoice, out intChoice, 3))
+            {
+                Console.WriteLine("Please enter a valid option\n");
+                stringChoice = Console.ReadLine();
+            }
+
+            switch (intChoice)
+            {
+                case 1:
+                    {
+                        Console.WriteLine("Enter the number of the provider who provided the serviced for " + database.members[index].name);
+                        providerNumberString = Console.ReadLine();
+                        while (!IsWantedInDatabase(database, "Provider", providerNumberString, out providerIndex))
+                        {
+                            Console.WriteLine("Enter a valid provider number\n");
+                            providerNumberString = Console.ReadLine();
+                        }
+                        database.members[index].records[recordIndex - 1].providerName = database.providers[providerIndex].name;
+                        break;
+                    }
+                case 2:
+                    {
+                        Console.WriteLine("Enter the service code for the service");
+                        serviceCodeString = Console.ReadLine();
+                        isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
+                        isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
+
+                        //ensure user provides valid data
+                        while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
+                        {
+                            Console.WriteLine("Please enter a valid service code\n");
+                            serviceCodeString = Console.ReadLine();
+                            isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
+                            isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
+                        }
+
+                        string service = Enum.GetName(typeof(Database.ProviderDirectory), serviceCodeInt);
+                        database.members[index].records[recordIndex - 1].service = service;
+                        break;
+                    }
+                case 3:
+                    {
+                        Console.WriteLine("Enter the date of the service (mm-dd-yyyy)");
+                        date = Console.ReadLine();
+                        
+                        while (!DateTime.TryParse(date, out result))
+                        {
+                            Console.WriteLine("Enter a valid date in mm-dd-YYYY format\n");
+                            date = Console.ReadLine();
+                        }
+
+                        date = result.ToString();
+                        database.members[index].records[recordIndex - 1].date = date;
+                        break;
+                    }
+                default:
+                    {
+                        Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
+                        break;
+                    }
+            }
+            database.save2disk(database);
+            Console.Write("Record was updated");
+        }
+
+        //Lets user a record to a provider. This function takes the database
+        //and the index where the provider is located in the database as arguments
+        private static void AddProviderRecord(Database database, int index)
+        {
+            string date;
+            string feeString;
+            double feeDouble;
+            string memberIdString;
+            int memberIndex;
+            string serviceCodeString;
+            int serviceCodeInt;
+            bool isValidService;
+            string comment;
+            bool isValidInt;
+            DateTime result;
+
+            if (index >= database.members.Length || index < 0)
+            {
+                Console.WriteLine("ERROR: attempted to access element out of bounds...\n Returning to last menu");
+                return;
+            }
+
+            if (database.members[0].name == null)
+            {
+                Console.WriteLine("There are no members in the database to add a record about. Returning to last menu\n");
+                return;
+            }
+
+            Console.WriteLine("Enter the nine digit id of the member who recieved the service \n");
+            memberIdString = Console.ReadLine();
+
+            while (!IsWantedInDatabase(database, "Member", memberIdString, out memberIndex))
+            {
+                Console.WriteLine("Please enter a valid id number\n");
+                memberIdString = Console.ReadLine();
+            }
+           
+            Console.WriteLine("Enter the date of the service (mm-dd-yyyy)");
+            date = Console.ReadLine();
+
+            while (!DateTime.TryParse(date, out result))
+            {
+               Console.WriteLine("Enter a valid date in dd-mm-yyyy format\n");
+               date = Console.ReadLine();
+            }
+
+           date = result.ToString();
+
+
+            Console.WriteLine("Enter the service code of the service");
+            serviceCodeString = Console.ReadLine();
+
+            isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
+            isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
+
+            //ensure user provides valid data
+            while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
+            {
+                Console.WriteLine("Please enter a valid service code\n");
+                serviceCodeString = Console.ReadLine();
+                isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
+                isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
+            }
+
+            Console.WriteLine("Do you want to add a comment about this service? (y/n)\n");
+            comment = Console.ReadLine();
+
+            if (comment.Length > 1)
+                comment = comment.Substring(0, 1);
+
+            if (comment == "y" || comment == "Y")
+            {
+                Console.WriteLine("Enter a comment about the service (100 character limit)\n");
+                comment = Console.ReadLine();
+            }
+            else
+                comment = "";
+
+            Console.WriteLine("Enter the cost of the service ($99,999.99 limit)\n");
+            feeString = Console.ReadLine();
+
+            while (!double.TryParse(feeString, out feeDouble) || (double.TryParse(feeString, out feeDouble) && feeDouble > 99999.99))
+            {
+                Console.WriteLine("Enter a valid cost for the service\n");
+                feeString = Console.ReadLine();
+            }
+
+            if (comment.Length > 100)
+                comment = comment.Substring(0, 100);
+
+            //get next empty element in record array
+            int i = database.providers[index].records.Count(x => x.memberName != null);
+
+            database.providers[index].records[i].timestamp = DateTime.Now;
+            database.providers[index].records[i].date = date;
+            database.providers[index].records[i].memberName = database.members[memberIndex].name;
+            database.providers[index].records[i].memberNumber = database.members[memberIndex].number;
+            database.providers[index].records[i].serviceCode = serviceCodeInt;
+            database.providers[index].records[i].fee = feeDouble;
+            database.providers[index].consultations++;
+            database.providers[index].records[i].comment = comment;
+
+            database.save2disk(database);
+            Console.WriteLine("Provider record was succesfully added\n");
+        }
+
+
+        //Lets user add a record to an existing member. This function takes the
+        //database and the index where the member is located in the database as arguments
         private static void AddMemberRecord(Database database, int index)
         {
-            Console.WriteLine("Enter the data of the service (MM-DD-YYYY)");
-            database.members[index].records[database.members[index].records.Length - 1].date = Console.ReadLine();
-            Console.WriteLine("Enter the name of the provider who provided the serviced for " + database.members[index].name);
-            database.members[index].records[database.members[index].records.Length - 1].providerName = Console.ReadLine();
-            Console.WriteLine("Enter the number of the service provided");
-            database.members[index].records[database.members[index].records.Length - 1].service = Console.ReadLine();
-        }
+            string date;
+            string providerNumberString;
+            string service;
+            int providerIndex;
+            string serviceCodeString;
+            int serviceCodeInt;
+            bool isValidService;
+            bool isValidInt;
+            DateTime result;
 
+            if (database.providers[0].name == null)
+            {
+                Console.WriteLine("There are no providers in the database to preform the service. Returning to last menu\n");
+                return;
+            }
 
-        //Helper function to check if user provided valid input. The first argument
-        //is a string representation of the user input. The second argument is the int representation of
-        //the user input. The third argument is the number of options the user can select from the menu.
-        //Will return true if the string was able to be parsed as an int. False if it was not or if the user
-        //selected an invalid menu option.
-        private static bool ValidInput(string stringSelection, out int intSelection, int numChoices)
-        {
-            //try and parse user input into an int
-            bool validInput = int.TryParse(stringSelection, out intSelection);
+            Console.WriteLine("Enter the date of the service (mm-dd-yyyy)");
+            date = Console.ReadLine();
 
-            //check if user provided an int and the selection is a valid option
-            if (!validInput || intSelection < 1 || intSelection > numChoices)
-                return false;
-            return true;
+            while (!DateTime.TryParse(date, out result))
+            {
+                Console.WriteLine("Enter a valid date in mm-dd-YYYY format\n");
+                date = Console.ReadLine();
+            }
+
+            date = result.ToString();
+
+            Console.WriteLine("Enter the number of the provider who provided the serviced for " + database.members[index].name);
+            providerNumberString = Console.ReadLine();
+
+            while (!IsWantedInDatabase(database, "Provider", providerNumberString, out providerIndex))
+            {
+                Console.WriteLine("Enter a valid provider number\n");
+                providerNumberString = Console.ReadLine();
+            }
+
+            Console.WriteLine("Enter the service code of the service");
+            serviceCodeString = Console.ReadLine();
+
+            isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
+            isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
+
+            while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
+            {
+                Console.WriteLine("Please enter a valid service code\n");
+                serviceCodeString = Console.ReadLine();
+                isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
+                isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
+            }
+
+            //convert enum value into a string
+            service = Enum.GetName(typeof(Database.ProviderDirectory), serviceCodeInt);
+
+            //get next empty element in record array
+            int i = database.members[index].records.Count(x => x.providerName != null);
+
+            //set record data to member
+            database.members[index].records[i].date = date;
+            database.members[index].records[i].providerName = database.providers[providerIndex].name;
+            database.members[index].records[i].service = service;
+            database.save2disk(database);
+            Console.WriteLine("Member record was succesfully added\n");
         }
 
         //Remove member from database.This function takes the database
-        //and the id of the member that is being removed
+        //and the id of the member that is being removed as arguments
         private static void RemoveMember(Database database, int id)
         {
             int i = 0;
             bool found = false;
-           
+
             //while there is a valid member at index i
             while (database.members[i].name != null && !found)
             {
@@ -271,14 +1017,14 @@ namespace ChocAn
                 }
                 i++;
             }
-            if(!found)
+            if (!found)
                 Console.WriteLine("Member was not found\n");
             else
                 Console.WriteLine("Member was successfully removed\n");
         }
 
-        //Remove provider from datrabase. This function takes the database
-        //and the id of the provider that is being removed
+        //Remove provider from database. This function takes the database
+        //and the id of the provider that is being removed as arguments
         private static void RemvoveProvider(Database database, int id)
         {
             bool found = false;
@@ -339,96 +1085,12 @@ namespace ChocAn
                 Console.WriteLine("Provider was successfully removed\n");
         }
 
-        //Get user input to remove either a member or provider from the database.
-        //This function takes the database and a string that represents the type of
-        //account that should be removed
-        private static void RemovePerson(Database database, string type)
-        {
-            int idToRemove = 0;
-            string personString;
-
-            Console.WriteLine("Enter the nine digit id of the " + type + " you want to remove\n");
-            personString = Console.ReadLine();
-
-            //ensure user provides valid data
-            while (!int.TryParse(personString, out idToRemove))
-            {
-                Console.WriteLine("Please enter a valid id number\n");
-                personString = Console.ReadLine();
-            }
-
-            if (type == "Member")
-                RemoveMember(database, idToRemove);
-            else
-                RemvoveProvider(database, idToRemove);
-        }
-
-        //Get user input to add either a member or provider to the database.
-        //This function takes the database and a string that represents the type of
-        //account that should be added
-        private static void AddPerson(Database database, string type)
-        {
-            int accountId;
-            int zip;
-            string memberZipString;
-            string accountType;
-            string name;
-            string address;
-            string city;
-            string state;
-
-            //check what kind of account is being created
-            if (type == "Member")
-                accountType = "Member";
-            else
-                accountType = "Provider";
-
-            //gather user input
-            Console.WriteLine("Enter the " + accountType + "'s first and last name (25 character limit)\n");
-            name = Console.ReadLine();
-            Console.WriteLine("Enter the " + accountType + "'s address (25 character limit)\n");
-            address = Console.ReadLine();
-            Console.WriteLine("Enter the " + accountType + "'s city (14 character limit)\n");
-            city = Console.ReadLine();
-            Console.WriteLine("Enter the " + accountType + "'s two letter state abbreviation\n");
-            state = Console.ReadLine();
-            Console.WriteLine("Enter the " + accountType + "'s zip code\n");
-            memberZipString = Console.ReadLine();
-
-            //try and parse zip code into an int
-            while (!int.TryParse(memberZipString, out zip))
-            {
-                Console.WriteLine("Enter a valid zip code\n");
-                memberZipString = Console.ReadLine();
-            }
-
-            //generate account id
-            accountId = GenerateID(database, accountType);
-
-            //truncate all data to character limit
-            if (name.Length > 25)
-                name = name.Substring(0, 25);
-            if (address.Length > 25)
-                address = address.Substring(0, 25);
-            if (city.Length > 14)
-                city = city.Substring(0, 14);
-            if (state.Length > 2)
-                state = state.Substring(0, 2);
-
-            //copy data into proper account type
-            if (type == "Member")
-                CreateMember(database, name, address, city, state, zip, accountId);
-            else
-                CreateProvider(database, name, address, city, state, zip, accountId);
-
-        }
-
-        //Creates a member account by taking the database and the member fields
-        private static void CreateMember(Database database, string name, string address, string city, string state, int zip,int id)
+        //Creates a member account by taking the database and the member fields as arguments
+        private static void CreateMember(Database database, string name, string address, string city, string state, int zip, int id)
         {
             database.members[mNumMembers].name = name;
             database.members[mNumMembers].address = address;
-            database.members[mNumMembers].city = city; 
+            database.members[mNumMembers].city = city;
             database.members[mNumMembers].state = state;
             database.members[mNumMembers].zip = zip;
             database.members[mNumMembers].status = (Database.Validity)0;
@@ -439,7 +1101,7 @@ namespace ChocAn
             Console.WriteLine("Member was successfully created\n");
         }
 
-        //Creates a provider account by taking the database and the provider fields
+        //Creates a provider account by taking the database and the provider fields as arguments
         private static void CreateProvider(Database database, string name, string address, string city, string state, int zip, int id)
         {
             database.providers[mNumProviders].name = name;
@@ -456,8 +1118,24 @@ namespace ChocAn
             Console.WriteLine("Provider was successfully created\n");
         }
 
-        //Generate a random  9 digit id number.
-        //Regenerate id if match has NOT been tested
+        //Helper function to check if user provided valid input. The first argument
+        //is a string representation of the user input. The second argument is the int representation of
+        //the user input. The third argument is the number of options the user can select from the menu.
+        //Will return true if the string was able to be parsed as an int. False if it was not or if the user
+        //selected an invalid menu option.
+        private static bool ValidInput(string stringSelection, out int intSelection, int numChoices)
+        {
+            //try and parse user input into an int
+            bool validInput = int.TryParse(stringSelection, out intSelection);
+
+            //check if user provided an int and the selection is a valid option
+            if (!validInput || intSelection < 1 || intSelection > numChoices)
+                return false;
+            return true;
+        }
+
+        ///Generates a random 9 digit id number. This function takes
+        //the database and the account type as arguments
         private static int GenerateID(Database database, string type)
         {
             Random rand = new Random();
@@ -466,10 +1144,11 @@ namespace ChocAn
 
             if (type == "Member")
             {
+                //while there is a valid member
                 while (database.members[i].name != null)
                 {
                     //if random number matches number in database
-                    //reset counter and generates new random number
+                    //reset counter and generate new random number
                     if (database.members[i].number == randNum)
                     {
                         i = 0;
@@ -481,16 +1160,15 @@ namespace ChocAn
             }
             else if (type == "Provider")
             {
-
+                //while there is a valid provider
                 while (database.providers[i].name != null)
                 {
                     //if random number matches number in database
-                    //reset counter and generates new random number
+                    //reset counter and generate new random number
                     if (database.providers[i].number == randNum)
                     {
                         i = 0;
                         randNum = rand.Next(100000000, 999999999);
-                     
                     }
                     else
                         i++;
@@ -498,8 +1176,93 @@ namespace ChocAn
             }
             else
                 return -1;
-            Console.WriteLine("moving onto next account\n");
             return randNum;
+        }
+
+        //Function to check if a member or provider is in the database and is the one trying to be found.
+        //If the member or provider is found, their name, account number, and address will be displayed.
+        //The user will be prompted to either enter 'y' or 'n' to determine if the account being displayed
+        //is the one they are looking for. This function will return true if it is the account they were looking for
+        //false if it is not the account they were looking for. This function takes the database, a string representation
+        //of the account type trying to be found, a string representation of an account id, and an index where the account
+        //is located in the database. This funciton will also set the 'index' argument
+        //to the element the account is being stored, or -1 if it was not found or not wanted
+        private static bool IsWantedInDatabase(Database database, string type, string stringId, out int index)
+        {
+            bool foundAndWanted = false;
+            index = -1;
+            string choice;
+            int id;
+
+            if (!int.TryParse(stringId, out id))
+                return foundAndWanted;
+
+            if (type == "Member")
+            {
+                for (int i = 0; i < mNumMembers; i++)
+                {
+                    //if id is found, display member name, number, and address
+                    if (database.members[i].number == id)
+                    {
+                        Console.WriteLine("Name: " + database.members[i].name);
+                        Console.WriteLine("Member Number: " + database.members[i].number);
+                        Console.WriteLine("Address: " + database.members[i].address);
+                        Console.WriteLine("Is this the member you want to add a record to? (y/n)\n");
+                        choice = Console.ReadLine();
+
+                        //check if user input needs to be truncated
+                        if (choice.Length > 1)
+                            choice = choice.Substring(0, 1);
+
+                        //check if member displayed is the member they were looking for
+                        if (choice == "y" || choice == "Y")
+                        {
+                            foundAndWanted = true;
+                            index = i;
+                            return foundAndWanted;
+                        }
+                        else
+                        {
+                            index = -1;
+                            return foundAndWanted;
+                        }
+                    }
+                }
+                return foundAndWanted;
+            }
+            else
+            {
+                for (int i = 0; i < mNumProviders; i++)
+                {
+                    //if id is found, display provider name, number, and address
+                    if (database.providers[i].number == id)
+                    {
+                        Console.WriteLine("Name: " + database.providers[i].name);
+                        Console.WriteLine("Member Number: " + database.providers[i].number);
+                        Console.WriteLine("Address: " + database.providers[i].address);
+                        Console.WriteLine("Is this the provider you want to add a record to? (y/n)\n");
+                        choice = Console.ReadLine();
+
+                        //check if user input needs to be truncated
+                        if (choice.Length > 1)
+                            choice = choice.Substring(0, 1);
+
+                        //check if member displayed is the member they were looking for
+                        if (choice == "y" || choice == "Y")
+                        {
+                            foundAndWanted = true;
+                            index = i;
+                            return foundAndWanted;
+                        }
+                        else
+                        {
+                            index = -1;
+                            return foundAndWanted;
+                        }
+                    }
+                }
+                return foundAndWanted;
+            }
         }
 
         //Display the content of the database for testing
@@ -508,7 +1271,7 @@ namespace ChocAn
             int members = 0;
             int providers = 0;
             int i = 0;
-
+            int j = 0;
             while (database.members[i].address != null)
             {
                 Console.WriteLine("Name: " + database.members[i].name);
@@ -518,6 +1281,15 @@ namespace ChocAn
                 Console.WriteLine("Zip: " + database.members[i].zip);
                 Console.WriteLine("Number: " + database.members[i].number);
                 Console.WriteLine("Validity: " + database.members[i].status);
+                while (database.members[i].records[j].providerName != null)
+                {
+                    Console.WriteLine("\n-_-_-Record-_-_-");
+                    Console.WriteLine("Provider name " + database.members[i].records[j].providerName);
+                    Console.WriteLine("Service  " + database.members[i].records[j].service);
+                    Console.WriteLine("Service date " + database.members[i].records[j].date);
+                    ++j;
+                }
+                j = 0;
                 Console.WriteLine("\n");
                 i++;
                 ++members;
@@ -535,6 +1307,21 @@ namespace ChocAn
                 Console.WriteLine("Zip: " + database.providers[i].zip);
                 Console.WriteLine("Number: " + database.providers[i].number);
                 Console.WriteLine("\n");
+                while (database.providers[i].records[j].memberName != null)
+                {
+                    Console.WriteLine("\n-_-_-Record-_-_-");
+                    Console.WriteLine("member name " + database.providers[i].records[j].memberName);
+                    Console.WriteLine("member number  " + database.providers[i].records[j].memberNumber);
+                    Console.WriteLine("Service code " + database.providers[i].records[j].serviceCode);
+                    Console.WriteLine("Computer time stamp " + database.providers[i].records[j].timestamp);
+                    Console.WriteLine("Date " + database.providers[i].records[j].date);
+                    Console.WriteLine("Fee " + database.providers[i].records[j].fee);
+                    Console.WriteLine("Comment " + database.providers[i].records[j].comment);
+
+                    ++j;
+                }
+                j = 0;
+                Console.WriteLine("\n");
                 i++;
                 ++providers;
             }
@@ -548,40 +1335,19 @@ namespace ChocAn
         private static void PopulateAccounts(Database database)
         {
             //providers
-           // CreateProvider(database, "Steve Harvey", "123 fake st", "Tigard", "OR", 97223, GenerateID(database, "Provider"));
-           // CreateProvider(database, "Jennifer Montano", "2060 Hide A Way Road", "Santa Clara", "CA", 95050, GenerateID(database, "Provider"));
-          //  CreateProvider(database, "David Smith", "2174 Jehovah Drive", "Rocky Mount", "VA", 24151, GenerateID(database, "Provider"));
-          //  CreateProvider(database, "Jared Williams", "1151 Khale Street", "Murrells Inlet", "SC", 29576, GenerateID(database, "Provider"));
-          //  CreateProvider(database, "Ann Guajardo", "126 Valley Drive", "Norristown", "PA", 19403, GenerateID(database, "Provider"));
+            CreateProvider(database, "Steve Harvey", "123 fake st", "Tigard", "OR", 97223, GenerateID(database, "Provider"));
+            CreateProvider(database, "Jennifer Montano", "2060 Hide A Way Road", "Santa Clara", "CA", 95050, GenerateID(database, "Provider"));
+            // CreateProvider(database, "David Smith", "2174 Jehovah Drive", "Rocky Mount", "VA", 24151, GenerateID(database, "Provider"));
+            //  CreateProvider(database, "Jared Williams", "1151 Khale Street", "Murrells Inlet", "SC", 29576, GenerateID(database, "Provider"));
+            // CreateProvider(database, "Ann Guajardo", "126 Valley Drive", "Norristown", "PA", 19403, GenerateID(database, "Provider"));
             //members
             CreateMember(database, "Lisa J Macklin", "4429 Jerry Dove Drive", "Myrtle Beach", "SC", 29577, GenerateID(database, "Member"));
-            CreateMember(database, "Mary B Kirkland", "1703 Point Street", "Chicago", "IL", 60620, GenerateID(database, "Member"));
+            //CreateMember(database, "Mary B Kirkland", "1703 Point Street", "Chicago", "IL", 60620, GenerateID(database, "Member"));
             CreateMember(database, "Louis C Quinn", "2603 Short Street", "Austin", "TX", 78660, GenerateID(database, "Member"));
-            CreateMember(database, "Lorraine J Mayer", "2849 Heritage Road", "Madera", "CA", 93638, GenerateID(database, "Member"));
-            CreateMember(database, "David R Kean", "1146 Hickman Street", "Chicago", "IL", 60654, GenerateID(database, "Member"));
+            // CreateMember(database, "Lorraine J Mayer", "2849 Heritage Road", "Madera", "CA", 93638, GenerateID(database, "Member"));
+            // CreateMember(database, "David R Kean", "1146 Hickman Street", "Chicago", "IL", 60654, GenerateID(database, "Member"));
 
         }
 
-        private static bool isInDatabase(Database database, string type, int id)
-        {
-            bool found = false;
-            if(type == "Member")
-            {
-               for(int i=0; i < mNumMembers; i++)
-                {
-                    if (database.members[i].number == id)
-                        found = true;
-                }
-            }
-            else
-            {
-                for (int i = 0; i < mNumProviders; i++)
-                {
-                    if (database.providers[i].number == id)
-                        found = true;
-                }
-            }
-            return found;
-        }
     }
 }
