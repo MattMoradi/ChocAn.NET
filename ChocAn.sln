@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31424.327
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChocAn", "ChocAn\ChocAn.csproj", "{71B18D05-F3C4-4711-9ED1-98F2D368C98F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{4D9C6D12-B1A5-4B5B-A252-F33236187461}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{4D9C6D12-B1A5-4B5B-A252-F33236187461}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManagerTests1", "ManagerTests1\ManagerTests1.csproj", "{F682D4D8-2736-4719-914E-B07804BD3335}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4D9C6D12-B1A5-4B5B-A252-F33236187461}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D9C6D12-B1A5-4B5B-A252-F33236187461}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D9C6D12-B1A5-4B5B-A252-F33236187461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F682D4D8-2736-4719-914E-B07804BD3335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F682D4D8-2736-4719-914E-B07804BD3335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F682D4D8-2736-4719-914E-B07804BD3335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F682D4D8-2736-4719-914E-B07804BD3335}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
