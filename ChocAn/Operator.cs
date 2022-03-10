@@ -13,8 +13,8 @@ namespace ChocAn
         public static void OperatorMain(Database database)
         {
             Console.Clear();
-            Console.Write("ChocAn.NET Terminal v1.0\n");
-            Console.Write("Hello Operator!");
+            Console.WriteLine("ChocAn.NET Terminal v1.0\n");
+            Console.WriteLine("Hello Operator!");
             MainMenu(database);
         }
 
@@ -29,15 +29,15 @@ namespace ChocAn
 
             do
             {
-                Console.Write("Select one of the options\n");
-                Console.Write("1. Modify a member\n");
-                Console.Write("2. Modify a provider\n");
-                Console.Write("3. Exit\n");
+                Console.WriteLine("1. Modify a member\n");
+                Console.WriteLine("2. Modify a provider\n");
+                Console.WriteLine("3. Exit\n");
+                Console.Write("Select one of the options: ");
                 stringSelection = Console.ReadLine();
 
                 while (!ValidInput(stringSelection, out intSelection, 3))
                 {
-                    Console.Write("Please enter a valid option (1-3)\n");
+                    Console.Write("Please enter a valid option (1-3):");
                     stringSelection = Console.ReadLine();
                 }
 
@@ -56,7 +56,7 @@ namespace ChocAn
                         break;
                     default:
                         {
-                            Console.Write("ERROR: should not have gotten here...\nReturning to last menu\n");
+                            Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
                             isDone = true;
                             break;
                         }
@@ -75,16 +75,17 @@ namespace ChocAn
 
             do
             {
-                Console.Write("Select one of the options\n");
-                Console.Write("1. Add new member\n");
-                Console.Write("2. Remove existing member\n");
-                Console.Write("3. Edit existing member Record\n");
-                Console.Write("4. Exit\n");
+                
+                Console.WriteLine("1. Add new member\n");
+                Console.WriteLine("2. Remove existing member\n");
+                Console.WriteLine("3. Edit existing member Record\n");
+                Console.WriteLine("4. Exit\n");
+                Console.Write("Select one of the options: ");
                 stringSelection = Console.ReadLine();
 
                 while (!ValidInput(stringSelection, out intSelection, 4))
                 {
-                    Console.Write("Please enter a valid option(1-4)\n");
+                    Console.Write("Please enter a valid option(1-4): ");
                     stringSelection = Console.ReadLine();
                 }
 
@@ -106,7 +107,7 @@ namespace ChocAn
                         break;
                     default:
                         {
-                            Console.Write("ERROR: should not have gotten here...\nReturning to last menu\n");
+                            Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
                             isDone = true;
                             break;
                         }
@@ -125,16 +126,16 @@ namespace ChocAn
 
             do
             {
-                Console.Write("Select one of the options\n");
-                Console.Write("1. Add new provider\n");
-                Console.Write("2. Remove existing provider\n");
-                Console.Write("3. Edit existing provider\n");
-                Console.Write("4. Exit\n");
+                Console.WriteLine("1. Add new provider\n");
+                Console.WriteLine("2. Remove existing provider\n");
+                Console.WriteLine("3. Edit existing provider\n");
+                Console.WriteLine("4. Exit\n");
+                Console.Write("Select one of the options: ");
                 stringSelection = Console.ReadLine();
 
                 while (!ValidInput(stringSelection, out intSelection, 4))
                 {
-                    Console.Write("Please enter a valid option (1-4)\n");
+                    Console.Write("Please enter a valid option (1-4): ");
                     stringSelection = Console.ReadLine();
                 }
 
@@ -156,7 +157,7 @@ namespace ChocAn
                         break;
                     default:
                         {
-                            Console.Write("ERROR: should not have gotten here...\nReturning to last menu\n");
+                            Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
                             isDone = true;
                             break;
                         }
@@ -184,21 +185,21 @@ namespace ChocAn
             else
                 accountType = "Provider";
 
-            Console.Write("Enter the " + accountType + "'s first and last name (25 character limit)\n");
+            Console.Write("Enter the " + accountType + "'s first and last name (25 character limit): ");
             name = Console.ReadLine();
-            Console.Write("Enter the " + accountType + "'s address (25 character limit)\n");
+            Console.Write("Enter the " + accountType + "'s address (25 character limit): ");
             address = Console.ReadLine();
-            Console.Write("Enter the " + accountType + "'s city (14 character limit)\n");
+            Console.Write("Enter the " + accountType + "'s city (14 character limit): ");
             city = Console.ReadLine();
-            Console.Write("Enter the " + accountType + "'s two letter state abbreviation\n");
+            Console.Write("Enter the " + accountType + "'s two letter state abbreviation: ");
             state = Console.ReadLine();
-            Console.Write("Enter the " + accountType + "'s zip code\n");
+            Console.Write("Enter the " + accountType + "'s zip code: ");
             memberZipString = Console.ReadLine();
 
             while (!int.TryParse(memberZipString, out zip) || (int.TryParse(memberZipString, out zip) && zip < 10000)
                 || (int.TryParse(memberZipString, out zip) && zip > 99999))
             {
-                Console.Write("Enter a valid 5 digit zip code\n");
+                Console.Write("Enter a valid 5 digit zip code: ");
                 memberZipString = Console.ReadLine();
             }
 
@@ -229,16 +230,16 @@ namespace ChocAn
 
             if ((type == "Provider" && database.providers[0].name == null) || (type == "Member" && database.members[0].name == null))
             {
-                Console.Write("There are no " + type + "s to remove a record from. Returning to last menu\n");
+                Console.WriteLine("There are no " + type + "s to remove a record from. Returning to last menu\n");
                 return;
             }
 
-            Console.Write("Enter the nine digit id of the " + type + " you want to remove\n");
+            Console.Write("Enter the nine digit id of the " + type + " you want to remove: ");
             personString = Console.ReadLine();
 
             if (!int.TryParse(personString, out idToRemove))
             {
-                Console.Write("Unable to find a member with that number. Returning to last menu\n");
+                Console.WriteLine("Unable to find a member with that number. Returning to last menu\n");
                 return;
             }
 
@@ -257,16 +258,16 @@ namespace ChocAn
 
             if ((type == "Provider" && database.providers[0].name == null) || (type == "Member" && database.members[0].name == null))
             {
-                Console.Write("There are no " + type + "s to add a record to. Returning to last menu\n");
+                Console.WriteLine("There are no " + type + "s to add a record to. Returning to last menu\n");
                 return;
             }
 
-            Console.Write("Enter the nine digit id of the " + type + " you want to add a record to\n");
+            Console.Write("Enter the nine digit id of the " + type + " you want to add a record to: ");
             personString = Console.ReadLine();
 
             if (!IsWantedInDatabase(database, type, personString, out accountIndex))
             {
-                Console.Write("Unable to find a " + type + " with that number. Returning to last menu\n");
+                Console.WriteLine("Unable to find a " + type + " with that number. Returning to last menu\n");
                 return;
             }
 
@@ -285,16 +286,16 @@ namespace ChocAn
 
             if ((type == "Provider" && database.providers[0].name == null) || (type == "Member" && database.members[0].name == null))
             {
-                Console.Write("There are no " + type + "s to remove a record from. Returning to last menu\n");
+                Console.WriteLine("There are no " + type + "s to remove a record from. Returning to last menu\n");
                 return;
             }
 
-            Console.Write("Enter the nine digit id of the " + type + " you want to add a record to\n");
+            Console.Write("Enter the nine digit id of the " + type + " you want to add a record to: ");
             personString = Console.ReadLine();
 
             if (!IsWantedInDatabase(database, type, personString, out accountIndex))
             {
-                Console.Write("Unable to find a " + type + " with that number. Returning to last menu\n");
+                Console.WriteLine("Unable to find a " + type + " with that number. Returning to last menu\n");
                 return;
             }
 
@@ -317,28 +318,28 @@ namespace ChocAn
 
             if (database.providers[index].records[0].memberName == null)
             {
-                Console.Write("This provider has no records to remove. Returning to last menu\n");
+                Console.WriteLine("This provider has no records to remove. Returning to last menu\n");
                 return;
             }
 
             for (int i = 0; i < lastEl; i++)
             {
                 count += 1;
-                Console.Write("Record # " + count);
-                Console.Write("Member Name: " + database.providers[index].records[i].memberName);
-                Console.Write("Member Number: " + database.providers[index].records[i].memberNumber);
-                Console.Write("Service Code: " + database.providers[index].records[i].serviceCode);
-                Console.Write("Date: " + database.providers[index].records[i].date);
-                Console.Write("-_-_-_-_-_-_-_-_-_-_\n");
+                Console.WriteLine("Record # " + count);
+                Console.WriteLine("Member Name: " + database.providers[index].records[i].memberName);
+                Console.WriteLine("Member Number: " + database.providers[index].records[i].memberNumber);
+                Console.WriteLine("Service Code: " + database.providers[index].records[i].serviceCode);
+                Console.WriteLine("Date: " + database.providers[index].records[i].date);
+                Console.WriteLine("-_-_-_-_-_-_-_-_-_-_\n");
             }
 
-            Console.Write("Enter the number of the record you want to remove\n");
+            Console.Write("Enter the number of the record you want to remove: ");
             selectionString = Console.ReadLine();
 
             while (!int.TryParse(selectionString, out selectionInt) || (int.TryParse(selectionString, out selectionInt) && selectionInt > lastEl)
                 || (int.TryParse(selectionString, out selectionInt) && selectionInt < 1))
             {
-                Console.Write("Enter a valid record number to remove");
+                Console.Write("Enter a valid record number to remove: ");
                 selectionString = Console.ReadLine();
             }
 
@@ -374,7 +375,7 @@ namespace ChocAn
                 database.providers[index].records[lastEl - 1].comment = null;
             }
             database.save2disk(database);
-            Console.Write("The record was succesfully removed\n");
+            Console.WriteLine("The record was succesfully removed\n");
         }
 
         //lets user remove a record from a member. This function takes the database
@@ -390,27 +391,27 @@ namespace ChocAn
 
             if (database.members[index].records[0].providerName == null)
             {
-                Console.Write("This member has no records to remove. Returning to last menu\n");
+                Console.WriteLine("This member has no records to remove. Returning to last menu\n");
                 return;
             }
 
             for (int i = 0; i < lastEl; i++)
             {
                 count += 1;
-                Console.Write("Record # " + count);
-                Console.Write("Provider Name: " + database.members[index].records[i].providerName);
-                Console.Write("Service: " + database.members[index].records[i].service);
-                Console.Write("Date: " + database.members[index].records[i].date);
-                Console.Write("-_-_-_-_-_-_-_-_-_-_\n");
+                Console.WriteLine("Record # " + count);
+                Console.WriteLine("Provider Name: " + database.members[index].records[i].providerName);
+                Console.WriteLine("Service: " + database.members[index].records[i].service);
+                Console.WriteLine("Date: " + database.members[index].records[i].date);
+                Console.WriteLine("-_-_-_-_-_-_-_-_-_-_\n");
             }
 
-            Console.Write("\nEnter the number of the record you want to remove\n");
+            Console.Write("\nEnter the number of the record you want to remove: ");
             selectionString = Console.ReadLine();
 
             while (!int.TryParse(selectionString, out selectionInt) || (int.TryParse(selectionString, out selectionInt) && selectionInt > lastEl)
                 || (int.TryParse(selectionString, out selectionInt) && selectionInt < 1))
             {
-                Console.Write("Enter a valid record number to remove");
+                Console.Write("Enter a valid record number to remove: ");
                 selectionString = Console.ReadLine();
             }
 
@@ -435,7 +436,7 @@ namespace ChocAn
                 database.members[index].records[lastEl - 1].service = null;
             }
             database.save2disk(database);
-            Console.Write("The record was succesfully removed\n");
+            Console.WriteLine("The record was succesfully removed\n");
         }
 
         //displays the record modification menu to the user. This function takes the database
@@ -449,16 +450,17 @@ namespace ChocAn
 
             do
             {
-                Console.Write("Select one of the options\n");
-                Console.Write("1. Add new record\n");
-                Console.Write("2. Remove existing record\n");
-                Console.Write("3. Modify existing record\n");
-                Console.Write("4. Exit\n");
+                
+                Console.WriteLine("1. Add new record\n");
+                Console.WriteLine("2. Remove existing record\n");
+                Console.WriteLine("3. Modify existing record\n");
+                Console.WriteLine("4. Exit\n");
+                Console.Write("Select one of the options: ");
                 stringSelection = Console.ReadLine();
 
                 while (!ValidInput(stringSelection, out intSelection, 4))
                 {
-                    Console.Write("Please enter a valid option (1-4)\n");
+                    Console.Write("Please enter a valid option (1-4): ");
                     stringSelection = Console.ReadLine();
                 }
 
@@ -480,7 +482,7 @@ namespace ChocAn
                         break;
                     default:
                         {
-                            Console.Write("ERROR: should not have gotten here...\nReturning to last menu\n");
+                            Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
                             isDone = true;
                             break;
                         }
@@ -497,17 +499,17 @@ namespace ChocAn
 
             if ((type == "Provider" && database.providers[0].name == null) || (type == "Member" && database.members[0].name == null))
             {
-                Console.Write("There are no " + type + "s to modify. Returning to last menu\n");
+                Console.WriteLine("There are no " + type + "s to modify. Returning to last menu\n");
                 return;
             }
 
-            Console.Write("Enter the nine digit id of the " + type + " you want modify a record from\n");
+            Console.Write("Enter the nine digit id of the " + type + " you want modify a record from: ");
             personString = Console.ReadLine();
 
 
             if (!IsWantedInDatabase(database, type, personString, out accountIndex))
             {
-                Console.Write("Unable to find a " + type + " with that number. Returning to last menu\n");
+                Console.WriteLine("Unable to find a " + type + " with that number. Returning to last menu\n");
                 return;
             }
 
@@ -543,45 +545,46 @@ namespace ChocAn
 
             if (database.providers[index].records[0].memberName == null)
             {
-                Console.Write("This provider has no records to modify. Returning to last menu\n");
+                Console.WriteLine("This provider has no records to modify. Returning to last menu\n");
                 return;
             }
 
             for (int i = 0; i < lastEl; i++)
             {
                 count += 1;
-                Console.Write("Record # " + count);
-                Console.Write("member name " + database.providers[index].records[i].memberName);
-                Console.Write("member number  " + database.providers[index].records[i].memberNumber);
-                Console.Write("Service code " + database.providers[index].records[i].serviceCode);
-                Console.Write("Computer time stamp " + database.providers[index].records[i].timestamp);
-                Console.Write("Date " + database.providers[index].records[i].date);
-                Console.Write("Fee " + database.providers[index].records[i].fee);
-                Console.Write("Comment " + database.providers[index].records[i].comment);
-                Console.Write("-_-_-_-_-_-_-_-_-_-_\n");
+                Console.WriteLine("Record # " + count);
+                Console.WriteLine("member name " + database.providers[index].records[i].memberName);
+                Console.WriteLine("member number  " + database.providers[index].records[i].memberNumber);
+                Console.WriteLine("Service code " + database.providers[index].records[i].serviceCode);
+                Console.WriteLine("Computer time stamp " + database.providers[index].records[i].timestamp);
+                Console.WriteLine("Date " + database.providers[index].records[i].date);
+                Console.WriteLine("Fee " + database.providers[index].records[i].fee);
+                Console.WriteLine("Comment " + database.providers[index].records[i].comment);
+                Console.WriteLine("-_-_-_-_-_-_-_-_-_-_\n");
             }
 
-            Console.Write("\nEnter the number of the record you want to remove\n");
+            Console.Write("\nEnter the number of the record you want to remove: ");
             selectionString = Console.ReadLine();
 
             while (!int.TryParse(selectionString, out recordIndex) || (int.TryParse(selectionString, out recordIndex) && recordIndex > lastEl)
                 || (int.TryParse(selectionString, out recordIndex) && recordIndex < 1))
             {
-                Console.Write("Enter a valid record number to modify");
+                Console.Write("Enter a valid record number to modify: ");
                 selectionString = Console.ReadLine();
             }
 
-            Console.Write("Which field do you want to modify?\n");
-            Console.Write("1.Member\n");
-            Console.Write("2.Service code\n");
-            Console.Write("3.Date of the service\n");
-            Console.Write("4.Fee\n");
-            Console.Write("5.Comment\n");
+            
+            Console.WriteLine("1.Member\n");
+            Console.WriteLine("2.Service code\n");
+            Console.WriteLine("3.Date of the service\n");
+            Console.WriteLine("4.Fee\n");
+            Console.WriteLine("5.Comment\n");
+            Console.Write("Enter the field number you wish to modify: ");
             stringChoice = Console.ReadLine();
 
             while (!ValidInput(stringChoice, out intChoice, 5))
             {
-                Console.Write("Please enter a valid option (1-5)\n");
+                Console.Write("Please enter a valid option (1-5): ");
                 stringChoice = Console.ReadLine();
             }
 
@@ -589,12 +592,12 @@ namespace ChocAn
             {
                 case 1:
                     {
-                        Console.Write("Enter the nine digit id of the member who recieved the service \n");
+                        Console.Write("Enter the nine digit id of the member who recieved the service: ");
                         memberIdString = Console.ReadLine();
 
                         while (!IsWantedInDatabase(database, "Member", memberIdString, out memberIndex))
                         {
-                            Console.Write("Please enter a valid id number\n");
+                            Console.Write("Please enter a valid id number: ");
                             memberIdString = Console.ReadLine();
                         }
                         database.providers[index].records[recordIndex - 1].memberName = database.members[memberIndex].name;
@@ -603,7 +606,7 @@ namespace ChocAn
                     }
                 case 2:
                     {
-                        Console.Write("Enter the service code for the service");
+                        Console.Write("Enter the six digit service code for the service: ");
                         serviceCodeString = Console.ReadLine();
                         isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
                         isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
@@ -611,7 +614,7 @@ namespace ChocAn
                         //ensure user provides valid data
                         while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
                         {
-                            Console.Write("Please enter a valid service code\n");
+                            Console.Write("Please enter a valid 6 digit service code: ");
                             serviceCodeString = Console.ReadLine();
                             isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
                             isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
@@ -623,12 +626,12 @@ namespace ChocAn
                     }
                 case 3:
                     {
-                        Console.Write("Enter the date of the service (mm-dd-yyyy)");
+                        Console.Write("Enter the date of the service (mm-dd-yyyy): ");
                         date = Console.ReadLine();
                       
                         while (!DateTime.TryParse(date, out result))
                         {
-                            Console.Write("Enter a valid date in mm-dd-yyyy format\n");
+                            Console.Write("Enter a valid date in mm-dd-yyyy format: ");
                             date = Console.ReadLine();
                         }
 
@@ -638,12 +641,12 @@ namespace ChocAn
                     }
                 case 4:
                     {
-                        Console.Write("Enter the cost of the service ($99,999.99 limit)\n");
+                        Console.Write("Enter the cost of the service ($99,999.99 limit): ");
                         feeString = Console.ReadLine();
 
                         while (!double.TryParse(feeString, out feeDouble) || (double.TryParse(feeString, out feeDouble) && feeDouble > 99999.99))
                         {
-                            Console.Write("Enter a valid cost for the service ($99,999.99 limit)\n");
+                            Console.Write("Enter a valid cost for the service ($99,999.99 limit): ");
                             feeString = Console.ReadLine();
                         }
                         database.providers[index].records[recordIndex - 1].fee = feeDouble;
@@ -651,7 +654,7 @@ namespace ChocAn
                     }
                 case 5:
                     {
-                        Console.Write("Enter a comment about the service (100 character limit)\n");
+                        Console.Write("Enter a comment about the service (100 character limit): ");
                         comment = Console.ReadLine();
 
                         if (comment.Length > 100)
@@ -662,12 +665,12 @@ namespace ChocAn
                     }
                 default:
                     {
-                        Console.Write("ERROR: should not have gotten here...\nReturning to last menu\n");
+                        Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
                         break;
                     }
             }
             database.save2disk(database);
-            Console.Write("Record was updated");
+            Console.WriteLine("Record was updated");
         }
 
         //Lets user modify a member record. This function takes the database
@@ -693,39 +696,40 @@ namespace ChocAn
 
             if (database.members[index].records[0].providerName == null)
             {
-                Console.Write("This member has no records to modify. Returning to last menu\n");
+                Console.WriteLine("This member has no records to modify. Returning to last menu\n");
                 return;
             }
 
             for (int i = 0; i < lastEl; i++)
             {
                 count += 1;
-                Console.Write("Record # " + count);
-                Console.Write("Provider Name: " + database.members[index].records[i].providerName);
-                Console.Write("Service: " + database.members[index].records[i].service);
-                Console.Write("Date: " + database.members[index].records[i].date);
-                Console.Write("-_-_-_-_-_-_-_-_-_-_\n");
+                Console.WriteLine("Record # " + count);
+                Console.WriteLine("Provider Name: " + database.members[index].records[i].providerName);
+                Console.WriteLine("Service: " + database.members[index].records[i].service);
+                Console.WriteLine("Date: " + database.members[index].records[i].date);
+                Console.WriteLine("-_-_-_-_-_-_-_-_-_-_\n");
             }
 
-            Console.Write("Enter the number of the record you want to remove\n");
+            Console.Write("Enter the number of the record you want to remove: ");
             selectionString = Console.ReadLine();
 
             while (!int.TryParse(selectionString, out recordIndex) || (int.TryParse(selectionString, out recordIndex) && recordIndex > lastEl)
                 || (int.TryParse(selectionString, out recordIndex) && recordIndex < 1))
             {
-                Console.Write("Enter a valid record number to modify");
+                Console.Write("Enter a valid record number to modify: ");
                 selectionString = Console.ReadLine();
             }
 
-            Console.Write("Which field do you want to modify?\n");
-            Console.Write("1.Provider's name\n");
-            Console.Write("2.Service provided\n");
-            Console.Write("3.Date of the service\n");
+            
+            Console.WriteLine("1.Provider's name\n");
+            Console.WriteLine("2.Service provided\n");
+            Console.WriteLine("3.Date of the service\n");
+            Console.Write("Enter the field number you wish to modify: ");
             stringChoice = Console.ReadLine();
 
             while (!ValidInput(stringChoice, out intChoice, 3))
             {
-                Console.Write("Please enter a valid menu option (1-3)\n");
+                Console.Write("Please enter a valid menu option (1-3): ");
                 stringChoice = Console.ReadLine();
             }
 
@@ -733,11 +737,11 @@ namespace ChocAn
             {
                 case 1:
                     {
-                        Console.Write("Enter the number of the provider who provided the serviced for " + database.members[index].name);
+                        Console.Write("Enter the 9 digit number of the provider who provided the serviced for " + database.members[index].name + ": ");
                         providerNumberString = Console.ReadLine();
                         while (!IsWantedInDatabase(database, "Provider", providerNumberString, out providerIndex))
                         {
-                            Console.Write("Enter a valid provider number\n");
+                            Console.Write("Enter a valid 9 digit provider number: ");
                             providerNumberString = Console.ReadLine();
                         }
                         database.members[index].records[recordIndex - 1].providerName = database.providers[providerIndex].name;
@@ -745,15 +749,14 @@ namespace ChocAn
                     }
                 case 2:
                     {
-                        Console.Write("Enter the service code for the service");
+                        Console.Write("Enter the 6 digit service code for the service: ");
                         serviceCodeString = Console.ReadLine();
                         isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
                         isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
 
-                        //ensure user provides valid data
                         while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
                         {
-                            Console.Write("Please enter a valid 6 digit service code\n");
+                            Console.Write("Please enter a valid 6 digit service code: ");
                             serviceCodeString = Console.ReadLine();
                             isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
                             isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
@@ -765,12 +768,12 @@ namespace ChocAn
                     }
                 case 3:
                     {
-                        Console.Write("Enter the date of the service (mm-dd-yyyy)");
+                        Console.Write("Enter the date of the service (mm-dd-yyyy): ");
                         date = Console.ReadLine();
                         
                         while (!DateTime.TryParse(date, out result))
                         {
-                            Console.Write("Enter a valid date in mm-dd-yyyy format\n");
+                            Console.Write("Enter a valid date in mm-dd-yyyy format: ");
                             date = Console.ReadLine();
                         }
 
@@ -780,12 +783,12 @@ namespace ChocAn
                     }
                 default:
                     {
-                        Console.Write("ERROR: should not have gotten here...\nReturning to last menu\n");
+                        Console.WriteLine("ERROR: should not have gotten here...\nReturning to last menu\n");
                         break;
                     }
             }
             database.save2disk(database);
-            Console.Write("Record was updated");
+            Console.WriteLine("Record was updated");
         }
 
         //Lets user a record to a provider. This function takes the database
@@ -806,38 +809,38 @@ namespace ChocAn
 
             if (index >= database.members.Length || index < 0)
             {
-                Console.Write("ERROR: attempted to access element out of bounds...\n Returning to last menu");
+                Console.WriteLine("ERROR: attempted to access element out of bounds...\n Returning to last menu");
                 return;
             }
 
             if (database.members[0].name == null)
             {
-                Console.Write("There are no members in the database to add a record about. Returning to last menu\n");
+                Console.WriteLine("There are no members in the database to add a record about. Returning to last menu\n");
                 return;
             }
 
-            Console.Write("Enter the nine digit id of the member who recieved the service \n");
+            Console.Write("Enter the nine digit id of the member who recieved the service: ");
             memberIdString = Console.ReadLine();
 
             if (!IsWantedInDatabase(database, "Member", memberIdString, out memberIndex))
             {
-                Console.Write("Unable to find a member with that number. Returning to last menu\n");
+                Console.WriteLine("Unable to find a member with that number. Returning to last menu\n");
                 return;
             }
 
-            Console.Write("Enter the date of the service (mm-dd-yyyy)");
+            Console.Write("Enter the date of the service (mm-dd-yyyy): ");
             date = Console.ReadLine();
 
             while (!DateTime.TryParse(date, out result))
             {
-               Console.Write("Enter a valid date in dd-mm-yyyy format\n");
+               Console.Write("Enter a valid date in dd-mm-yyyy format: ");
                date = Console.ReadLine();
             }
 
            date = result.ToString();
 
 
-            Console.Write("Enter the six digit service code of the service");
+            Console.Write("Enter the six digit service code of the service: ");
             serviceCodeString = Console.ReadLine();
 
             isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
@@ -846,13 +849,13 @@ namespace ChocAn
             //ensure user provides valid data
             while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
             {
-                Console.Write("Please enter a valid 6 digit service code\n");
+                Console.Write("Please enter a valid 6 digit service code: ");
                 serviceCodeString = Console.ReadLine();
                 isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
                 isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
             }
 
-            Console.Write("Do you want to add a comment about this service? (y/n)\n");
+            Console.Write("Do you want to add a comment about this service? (y/n): ");
             comment = Console.ReadLine();
 
             if (comment.Length > 1)
@@ -860,18 +863,18 @@ namespace ChocAn
 
             if (comment == "y" || comment == "Y")
             {
-                Console.Write("Enter a comment about the service (100 character limit)\n");
+                Console.Write("Enter a comment about the service (100 character limit): ");
                 comment = Console.ReadLine();
             }
             else
                 comment = "";
 
-            Console.Write("Enter the cost of the service ($99,999.99 limit)\n");
+            Console.Write("Enter the cost of the service ($99,999.99 limit): ");
             feeString = Console.ReadLine();
 
             while (!double.TryParse(feeString, out feeDouble) || (double.TryParse(feeString, out feeDouble) && feeDouble > 99999.99))
             {
-                Console.Write("Enter a valid cost for the service ($99,999.99 limit)\n");
+                Console.Write("Enter a valid cost for the service ($99,999.99 limit): ");
                 feeString = Console.ReadLine();
             }
 
@@ -891,7 +894,7 @@ namespace ChocAn
             database.providers[index].records[i].comment = comment;
 
             database.save2disk(database);
-            Console.Write("Provider record was succesfully added\n");
+            Console.WriteLine("Provider record was succesfully added\n");
         }
 
 
@@ -911,31 +914,31 @@ namespace ChocAn
 
             if (database.providers[0].name == null)
             {
-                Console.Write("There are no providers in the database to preform the service. Returning to last menu\n");
+                Console.WriteLine("There are no providers in the database to preform the service. Returning to last menu\n");
                 return;
             }
 
-            Console.Write("Enter the date of the service (mm-dd-yyyy)");
+            Console.Write("Enter the date of the service (mm-dd-yyyy): ");
             date = Console.ReadLine();
 
             while (!DateTime.TryParse(date, out result))
             {
-                Console.Write("Enter a valid date in mm-dd-yyyy format\n");
+                Console.Write("Enter a valid date in mm-dd-yyyy format: ");
                 date = Console.ReadLine();
             }
 
             date = result.ToString();
 
-            Console.Write("Enter the 9 digit number of the provider who provided the serviced for " + database.members[index].name);
+            Console.Write("Enter the 9 digit number of the provider who provided the serviced for " + database.members[index].name + ": ");
             providerNumberString = Console.ReadLine();
 
             if (!IsWantedInDatabase(database, "Provider", providerNumberString, out providerIndex))
             {
-                Console.Write("Unable to find a provider with that number. Returning to last menu\n");
+                Console.WriteLine("Unable to find a provider with that number. Returning to last menu\n");
                 return;
             }
 
-            Console.Write("Enter the 6 digit service code of the service");
+            Console.Write("Enter the 6 digit service code of the service: ");
             serviceCodeString = Console.ReadLine();
 
             isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
@@ -943,7 +946,7 @@ namespace ChocAn
 
             while ((!isValidInt && !isValidService) || (isValidInt && !isValidService))
             {
-                Console.Write("Please enter a valid 6 digit service code\n");
+                Console.Write("Please enter a valid 6 digit service code: ");
                 serviceCodeString = Console.ReadLine();
                 isValidInt = int.TryParse(serviceCodeString, out serviceCodeInt);
                 isValidService = Enum.IsDefined(typeof(Database.ProviderDirectory), serviceCodeInt);
@@ -960,7 +963,7 @@ namespace ChocAn
             database.members[index].records[i].providerName = database.providers[providerIndex].name;
             database.members[index].records[i].service = service;
             database.save2disk(database);
-            Console.Write("Member record was succesfully added\n");
+            Console.WriteLine("Member record was succesfully added\n");
         }
 
         //Remove member from database.This function takes the database
@@ -1017,9 +1020,9 @@ namespace ChocAn
                 i++;
             }
             if (!found)
-                Console.Write("Member was not found\n");
+                Console.WriteLine("Member was not found\n");
             else
-                Console.Write("Member was successfully removed\n");
+                Console.WriteLine("Member was successfully removed\n");
         }
 
         //Remove provider from database. This function takes the database
@@ -1079,9 +1082,9 @@ namespace ChocAn
                 i++;
             }
             if (!found)
-                Console.Write("Provider was not found\n");
+                Console.WriteLine("Provider was not found\n");
             else
-                Console.Write("Provider was successfully removed\n");
+                Console.WriteLine("Provider was successfully removed\n");
         }
 
         //Creates a member account by taking the database and the member fields as arguments
@@ -1097,8 +1100,8 @@ namespace ChocAn
             database.members[mNumMembers].records = new Database.MemberRecords[50];
             mNumMembers++;
             database.save2disk(database);
-            Console.Write("Member was successfully created\n");
-            Console.Write(database.members[mNumMembers - 1].name + "'s member id is " + database.members[mNumMembers - 1].number + "\n");
+            Console.WriteLine("Member was successfully created\n");
+            Console.WriteLine(database.members[mNumMembers - 1].name + "'s member id is " + database.members[mNumMembers - 1].number + "\n");
         }
 
         //Creates a provider account by taking the database and the provider fields as arguments
@@ -1115,8 +1118,8 @@ namespace ChocAn
             database.providers[mNumProviders].number = id;
             mNumProviders++;
             database.save2disk(database);
-            Console.Write("Provider was successfully created\n");
-            Console.Write(database.providers[mNumProviders - 1].name + "'s provider id is " + database.providers[mNumProviders - 1].number+ "\n");
+            Console.WriteLine("Provider was successfully created\n");
+            Console.WriteLine(database.providers[mNumProviders - 1].name + "'s provider id is " + database.providers[mNumProviders - 1].number+ "\n");
         }
 
         //Helper function to check if user provided valid input. The first argument
@@ -1205,10 +1208,10 @@ namespace ChocAn
                     //if id is found, display member name, number, and address
                     if (database.members[i].number == id)
                     {
-                        Console.Write("Name: " + database.members[i].name);
-                        Console.Write("Member Number: " + database.members[i].number);
-                        Console.Write("Address: " + database.members[i].address);
-                        Console.Write("Is this the member you want to add a record to? (y/n)\n");
+                        Console.WriteLine("Name: " + database.members[i].name);
+                        Console.WriteLine("Member Number: " + database.members[i].number);
+                        Console.WriteLine("Address: " + database.members[i].address);
+                        Console.Write("Is this the member you want to add a record to? (y/n): ");
                         choice = Console.ReadLine();
 
                         //check if user input needs to be truncated
@@ -1238,10 +1241,10 @@ namespace ChocAn
                     //if id is found, display provider name, number, and address
                     if (database.providers[i].number == id)
                     {
-                        Console.Write("Name: " + database.providers[i].name);
-                        Console.Write("Member Number: " + database.providers[i].number);
-                        Console.Write("Address: " + database.providers[i].address);
-                        Console.Write("Is this the provider you want to add a record to? (y/n)\n");
+                        Console.WriteLine("Name: " + database.providers[i].name);
+                        Console.WriteLine("Member Number: " + database.providers[i].number);
+                        Console.WriteLine("Address: " + database.providers[i].address);
+                        Console.Write("Is this the provider you want to add a record to? (y/n): ");
                         choice = Console.ReadLine();
 
                         //check if user input needs to be truncated
