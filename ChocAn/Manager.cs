@@ -22,6 +22,7 @@ namespace ChocAn
             string tempString = "";
             int tempInt = 0;
             bool menuActive = true;
+            
             //Looping menu -----
             while (menuActive)
             {
@@ -47,17 +48,23 @@ namespace ChocAn
                 {
                     case 1:
                         Console.WriteLine("Generating testing garbage data... \n");
-                        FunctionA(providers);                //Display provider names, number of fees, and total fees.
+                        FunctionA(providers);                //Generates garbage data for testing
+                        Console.WriteLine("\n\nPress any key to return to the console menu...");
+                        Console.ReadKey();
                         Console.WriteLine("Returning to manager menu...");
                         break;
                     case 2:
                         Console.WriteLine("Gathering data... \n");
-                        FunctionB(providers);                //Display a summary of the data
+                        FunctionB(providers);                //Display provider names, number of fees, consultations, and total fees.
+                        Console.WriteLine("\n\nPress any key to return to the console menu...");
+                        Console.ReadKey();
                         Console.WriteLine("Returning to manager menu...");
                         break;
                     case 3:
                         Console.WriteLine("Gathering data summary... ");
-                        FunctionC(providers);
+                        FunctionC(providers);               //Display the data summary
+                        Console.WriteLine("\n\nPress any key to return to the console menu...");
+                        Console.ReadKey();
                         Console.WriteLine("Returning to manager menu...");
                         break;
                     case 4:
@@ -208,24 +215,7 @@ namespace ChocAn
             Console.WriteLine("There are " + k + " total providers.");
             Console.WriteLine("There are " + kc + " total consultations.");
             Console.WriteLine("$" + kk + " Is the total sum of provider fees.");
-            Console.WriteLine("\n\nPress any key to return to the manager menu...");
-            Console.ReadKey();
         }
     } //Class Bracket
 } //Namespace Bracket
 
-//Spare code snippets... 
-
-/*
-
-Console.WriteLine(providers[0].records);
-
-
-database.providers[0].name = "freddy";
-database.providers[0].number = 421;
-database.providers[0].totalFee = 420.99;
-
-
-string testingstringA = providers[0].name;
-
-*/
