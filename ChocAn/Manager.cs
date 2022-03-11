@@ -4,12 +4,13 @@ using System.Text;
 
 namespace ChocAn
 { //Namespace Bracket
-    class Manager
+    public class Manager
     { //Class bracket
         public static void ManagerMain(Database.Providers[] providers)
         {
 
             Console.Clear();
+            Console.WriteLine("ChocAn.NET Terminal v1.0\n");
             Console.WriteLine("ChocAn.NET Terminal v1.0\n");
             Console.WriteLine("Hello Manager!");
             ManagerMenu(providers);          //Where most of the magic happens
@@ -27,6 +28,7 @@ namespace ChocAn
             while (menuActive)
             {
                 Console.Clear();
+                Console.WriteLine("ChocAn.NET Terminal v1.0\n");
                 //Main menu prompt -----
                 Console.WriteLine("Select one of the options\n");
                 Console.WriteLine("1. Fill the first 5 slots with predictable garbage for testing.\n");
@@ -43,26 +45,33 @@ namespace ChocAn
                     tempString = Console.ReadLine();
                 } //check if the user provided valid input ^^^^^
                 Console.Clear();
+                Console.WriteLine("ChocAn.NET Terminal v1.0\n");
                 //Main menu switch -----
                 switch (tempInt) 
                 {
                     case 1:
                         Console.WriteLine("Generating testing garbage data... \n");
-                        FunctionA(providers);                //Generates garbage data for testing
+                        GarbageGenerator(providers);                //Generates garbage data for testing
                         Console.WriteLine("\n\nPress any key to return to the console menu...");
                         Console.ReadKey();
                         Console.WriteLine("Returning to manager menu...");
                         break;
                     case 2:
                         Console.WriteLine("Gathering data... \n");
-                        FunctionB(providers);                //Display provider names, number of fees, consultations, and total fees.
+                        DisplayGenerator(providers);                //Display provider names, number of fees, consultations, and total fees.
                         Console.WriteLine("\n\nPress any key to return to the console menu...");
                         Console.ReadKey();
                         Console.WriteLine("Returning to manager menu...");
                         break;
                     case 3:
                         Console.WriteLine("Gathering data summary... ");
-                        FunctionC(providers);               //Display the data summary
+                        int totalProv = 0;
+                        short totalCons = 0;
+                        decimal totalSum = 0;
+                        SummaryGenerator(providers, ref totalProv, ref totalCons, ref totalSum);               //Display the data summary
+                        Console.WriteLine("There are " + totalProv + " total providers.");
+                        Console.WriteLine("There are " + totalCons + " total consultations.");
+                        Console.WriteLine("$" + totalSum + " Is the total sum of provider fees.");
                         Console.WriteLine("\n\nPress any key to return to the console menu...");
                         Console.ReadKey();
                         Console.WriteLine("Returning to manager menu...");
@@ -102,7 +111,7 @@ namespace ChocAn
             return true;
         }
 
-        private static void FunctionA(Database.Providers[] providers)                 //junk data filler for testing
+        private static void GarbageGenerator(Database.Providers[] providers)                 //junk data filler for testing
         {
             bool runA = true;
             Console.WriteLine("Single line grid display activated...");
@@ -182,7 +191,7 @@ namespace ChocAn
             }
         }
 
-        private static void FunctionB(Database.Providers[] providers)                 //Display names, provider numbers, consultations, and total fees
+        private static void DisplayGenerator(Database.Providers[] providers)                 //Display names, provider numbers, consultations, and total fees
         {
             Console.WriteLine("Provider list display activated... \nProvider, Provider Number, Number of consultations (C), Total Fee");
             int j = 0;
@@ -197,23 +206,21 @@ namespace ChocAn
             }
             Console.WriteLine("End of data.");
         }
-        private static void FunctionC(Database.Providers[] providers)               //Display a summary of the data organized in a legible format
+        public static void SummaryGenerator(Database.Providers[] providers, ref int totProv, ref short totCon, ref decimal totSum)  //Display a summary of the data organized in a legible format
         {
-            int k = 0;
-            short kc = 0;
-            decimal kk = 0;
-            while (providers[k].name != null)
+            int totalProv = 0;
+            short totalCon = 0;
+            decimal totalSum = 0;
+            while (providers[totalProv].name != null)
             {
-                kk += Convert.ToDecimal(providers[k].totalFee);
-                kc += Convert.ToInt16((decimal)providers[k].consultations);
-                ++k;
+                totalSum += Convert.ToDecimal(providers[totalProv].totalFee);
+                totalCon += Convert.ToInt16((decimal)providers[totalProv].consultations);
+                ++totalProv;
             }
-            //Console.WriteLine("Yo this is function C running....\nIt currently doesn't do anything besides this statement.");
-            Math.Round(kk, 2);
+            totProv = totalProv;
+            totCon = totalCon;
+            totSum = totalSum;
             Console.Out.Flush();
-            Console.WriteLine("There are " + k + " total providers.");
-            Console.WriteLine("There are " + kc + " total consultations.");
-            Console.WriteLine("$" + kk + " Is the total sum of provider fees.");
         }
     } //Class Bracket
 } //Namespace Bracket
