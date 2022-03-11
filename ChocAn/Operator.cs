@@ -6,10 +6,10 @@ using System.Text;
 
 namespace ChocAn
 {
-    static class Operator
+    public static class Operator
     {
-        private static int mNumMembers = 0;
-        private static int mNumProviders = 0;
+        public static int mNumMembers = 0;
+        public static int mNumProviders = 0;
         public static void OperatorMain(Database database)
         {
             Console.Clear();
@@ -20,7 +20,7 @@ namespace ChocAn
 
         //Displays the main menu to the user. This function
         //takes the database as an argument
-        private static void MainMenu(Database database)
+        public static void MainMenu(Database database)
         {
             string stringSelection;
             int intSelection;
@@ -30,9 +30,9 @@ namespace ChocAn
             do
             {
                 Console.WriteLine("Select one of the options\n");
-                Console.WriteLine("1. Modify a member\n");
-                Console.WriteLine("2. Modify a provider\n");
-                Console.WriteLine("3. Exit\n");
+                Console.WriteLine("1) Modify a member\n");
+                Console.WriteLine("2) Modify a provider\n");
+                Console.WriteLine("3) Exit\n");
                 Console.Write("Input Selection: ");
                 stringSelection = Console.ReadLine();
 
@@ -67,7 +67,7 @@ namespace ChocAn
 
         //Displays the member menu to the user. This function
         //takes the database as an argument
-        private static void MemberMenu(Database database)
+        public static void MemberMenu(Database database)
         {
             string stringSelection;
             int intSelection;
@@ -77,10 +77,10 @@ namespace ChocAn
             do
             {
                 Console.WriteLine("Select one of the options\n");
-                Console.WriteLine("1. Add new member\n");
-                Console.WriteLine("2. Remove existing member\n");
-                Console.WriteLine("3. Edit existing member Record\n");
-                Console.WriteLine("4. Exit\n");
+                Console.WriteLine("1) Add new member\n");
+                Console.WriteLine("2) Remove existing member\n");
+                Console.WriteLine("3) Edit existing member Record\n");
+                Console.WriteLine("4) Exit\n");
                 Console.Write("Input Selection: ");
                 stringSelection = Console.ReadLine();
 
@@ -118,7 +118,7 @@ namespace ChocAn
 
         //Displays that provider menu to the user.This function
         //takes the database as an argument
-        private static void ProviderMenu(Database database)
+        public static void ProviderMenu(Database database)
         {
             string stringSelection;
             int intSelection = 0;
@@ -128,10 +128,10 @@ namespace ChocAn
             do
             {
                 Console.WriteLine("Select one of the options\n");
-                Console.WriteLine("1. Add new provider\n");
-                Console.WriteLine("2. Remove existing provider\n");
-                Console.WriteLine("3. Edit existing provider\n");
-                Console.WriteLine("4. Exit\n");
+                Console.WriteLine("1) Add new provider\n");
+                Console.WriteLine("2) Remove existing provider\n");
+                Console.WriteLine("3) Edit existing provider\n");
+                Console.WriteLine("4) Exit\n");
                 Console.Write("Input Selection: ");
                 stringSelection = Console.ReadLine();
 
@@ -170,7 +170,7 @@ namespace ChocAn
         //Get user input to add either a member or provider to the database.
         //This function takes the database and a string that represents the type of
         //account that should be added as arguments
-        private static void AddPerson(Database database, string type)
+        public static void AddPerson(Database database, string type)
         {
             int accountId;
             int zip;
@@ -225,7 +225,7 @@ namespace ChocAn
         //Get user input to remove either a member or provider from the database.
         //This function takes the database and a string that represents the type of
         //account that should be removed as arguments
-        private static void RemovePerson(Database database, string type)
+        public static void RemovePerson(Database database, string type)
         {
             int idToRemove;
             string personString;
@@ -253,7 +253,7 @@ namespace ChocAn
 
         //Gets the account type and number of a member or provider to add a record to.
         //This function takes the database and the account type as a string as arguments.
-        private static void AddRecord(Database database, string type)
+        public static void AddRecord(Database database, string type)
         {
             string personString;
             int accountIndex;
@@ -281,7 +281,7 @@ namespace ChocAn
 
         //Lets user remove a record from either a member or provider. This function
         //takes the database and the account type as a string as arguments.
-        private static void RemoveRecord(Database database, string type)
+        public static void RemoveRecord(Database database, string type)
         {
             string personString;
             int accountIndex;
@@ -309,7 +309,7 @@ namespace ChocAn
 
         //Lets user remove a record from a provider.This function takes the database
         //and the index of where the provider is located in the database as arguments
-        private static void RemoveProviderRecord(Database database, int index)
+        public static void RemoveProviderRecord(Database database, int index)
         {
             string selectionString;
             int selectionInt;
@@ -382,7 +382,7 @@ namespace ChocAn
 
         //lets user remove a record from a member. This function takes the database
         //and the index of where the member is located in the database as arguments
-        private static void RemoveMemberRecord(Database database, int index)
+        public static void RemoveMemberRecord(Database database, int index)
         {
             string selectionString;
             int selectionInt;
@@ -443,7 +443,7 @@ namespace ChocAn
 
         //displays the record modification menu to the user. This function takes the database
         //and a string representation of the account type that will be modified as arguments
-        private static void RecordModificationMenu(Database database, string type)
+        public static void RecordModificationMenu(Database database, string type)
         {
             string stringSelection;
             int intSelection;
@@ -494,7 +494,7 @@ namespace ChocAn
 
         //Displays the modificy record menu to the user.This function takes the database
         //and a string representation of the account type that will be modified as arguments
-        private static void ModifyRecord(Database database, string type)
+        public static void ModifyRecord(Database database, string type)
         {
             string personString;
             int accountIndex;
@@ -523,7 +523,7 @@ namespace ChocAn
 
         //Lets user modify a provider record. This function takes the database
         //and the index of where the member or provider is stored in the database as arguments
-        private static void ModifyProviderRecord(Database database, int index)
+        public static void ModifyProviderRecord(Database database, int index)
         {
             string selectionString;
             int recordIndex;
@@ -677,7 +677,7 @@ namespace ChocAn
 
         //Lets user modify a member record. This function takes the database
         //and the index of where the member or provider is stored in the database as arguments
-        private static void ModifyMemberRecord(Database database, int index)
+        public static void ModifyMemberRecord(Database database, int index)
         {
             string selectionString;
             int recordIndex;
@@ -795,7 +795,7 @@ namespace ChocAn
 
         //Lets user a record to a provider. This function takes the database
         //and the index where the provider is located in the database as arguments
-        private static void AddProviderRecord(Database database, int index)
+        public static void AddProviderRecord(Database database, int index)
         {
             string date;
             string feeString;
@@ -901,7 +901,7 @@ namespace ChocAn
 
         //Lets user add a record to an existing member. This function takes the
         //database and the index where the member is located in the database as arguments
-        private static void AddMemberRecord(Database database, int index)
+        public static void AddMemberRecord(Database database, int index)
         {
             string date;
             string providerNumberString;
@@ -969,7 +969,7 @@ namespace ChocAn
 
         //Remove member from database.This function takes the database
         //and the id of the member that is being removed as arguments
-        private static void RemoveMember(Database database, int id)
+        public static bool RemoveMember(Database database, int id)
         {
             int i = 0;
             bool found = false;
@@ -1021,14 +1021,20 @@ namespace ChocAn
                 i++;
             }
             if (!found)
+            {
                 Console.WriteLine("Member was not found\n");
+                return false;
+            }
             else
+            {
                 Console.WriteLine("Member was successfully removed\n");
+                return true;
+            }
         }
 
         //Remove provider from database. This function takes the database
         //and the id of the provider that is being removed as arguments
-        private static void RemvoveProvider(Database database, int id)
+        public static bool RemvoveProvider(Database database, int id)
         {
             bool found = false;
             int i = 0;
@@ -1083,13 +1089,20 @@ namespace ChocAn
                 i++;
             }
             if (!found)
+            {
                 Console.WriteLine("Provider was not found\n");
+                return false;
+            }  
             else
+            {
                 Console.WriteLine("Provider was successfully removed\n");
+                return true;
+            }
+                
         }
 
         //Creates a member account by taking the database and the member fields as arguments
-        private static void CreateMember(Database database, string name, string address, string city, string state, int zip, int id)
+        public static void CreateMember(Database database, string name, string address, string city, string state, int zip, int id)
         {
             database.members[mNumMembers].name = name;
             database.members[mNumMembers].address = address;
@@ -1106,7 +1119,7 @@ namespace ChocAn
         }
 
         //Creates a provider account by taking the database and the provider fields as arguments
-        private static void CreateProvider(Database database, string name, string address, string city, string state, int zip, int id)
+        public static void CreateProvider(Database database, string name, string address, string city, string state, int zip, int id)
         {
             database.providers[mNumProviders].name = name;
             database.providers[mNumProviders].address = address;
@@ -1128,7 +1141,7 @@ namespace ChocAn
         //the user input. The third argument is the number of options the user can select from the menu.
         //Will return true if the string was able to be parsed as an int. False if it was not or if the user
         //selected an invalid menu option.
-        private static bool ValidInput(string stringSelection, out int intSelection, int numChoices)
+        public static bool ValidInput(string stringSelection, out int intSelection, int numChoices)
         {
             //try and parse user input into an int
             bool validInput = int.TryParse(stringSelection, out intSelection);
@@ -1141,7 +1154,7 @@ namespace ChocAn
 
         ///Generates a random 9 digit id number. This function takes
         //the database and the account type as arguments
-        private static int GenerateID(Database database, string type)
+        public static int GenerateID(Database database, string type)
         {
             Random rand = new Random();
             int randNum = rand.Next(100000000, 999999999);
@@ -1192,7 +1205,7 @@ namespace ChocAn
         //of the account type trying to be found, a string representation of an account id, and an index where the account
         //is located in the database. This funciton will also set the 'index' argument
         //to the element the account is being stored, or -1 if it was not found or not wanted
-        private static bool IsWantedInDatabase(Database database, string type, string stringId, out int index)
+        public static bool IsWantedInDatabase(Database database, string type, string stringId, out int index)
         {
             bool foundAndWanted = false;
             index = -1;
