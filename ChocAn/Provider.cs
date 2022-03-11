@@ -62,6 +62,7 @@ namespace ChocAn
         }
         public static void ValidateMember(Database database)
         {
+            MemberNumValid = false;
             bool quit = false;
             while (!quit)
             {
