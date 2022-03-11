@@ -68,7 +68,7 @@ namespace ChocAn
                 Console.Write("Enter the member number:");
                 memberNumInput = Convert.ToInt32(Console.ReadLine());
 
-                ValidateMemberSearch(database);
+                if(memberNumInput != 0) ValidateMemberSearch(database);
 
                 if (MemberNumValid == true)
                 {
