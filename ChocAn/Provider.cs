@@ -120,7 +120,7 @@ namespace ChocAn
                 Console.Write("Enter your provider number:");
                 providerNumbInput = Convert.ToInt32(Console.ReadLine());
 
-                FindProvider(database);
+                if(providerNumbInput != 0) FindProvider(database);
                 if (!providerFound)
                 {
                     Console.WriteLine("Wrong provider number.");
