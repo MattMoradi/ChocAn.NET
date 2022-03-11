@@ -62,7 +62,6 @@ namespace ChocAn
         }
         public static void ValidateMember(Database database)
         {
-
             bool quit = false;
             while (!quit)
             {
@@ -152,7 +151,7 @@ namespace ChocAn
 
                 bool quit = false;
                 Console.WriteLine("If you know the service code and want to enter it now, enter 1.");
-                Console.Write("Otherwise, enter 2 to request Provider Directory:");
+                Console.WriteLine("Otherwise, enter 2 to request Provider Directory:");
                 Console.Write("Input Selection: ");
                 var input1 = Console.ReadLine();
                 int serviceCodeInput = 0;
@@ -339,7 +338,7 @@ namespace ChocAn
                 Console.WriteLine("Zip code: {0}\n", database.providers[providerIndex].zip);
                 for (int i = 0; database.providers[providerIndex].records[i].memberName != null; i++)
                 {
-                    Console.WriteLine("Date of service: {0}", database.providers[providerIndex].records[i].date);
+                    Console.WriteLine("\nDate of service: {0}", database.providers[providerIndex].records[i].date);
                     Console.WriteLine("Date and time data were received by the computer: {0}", database.providers[providerIndex].records[i].timestamp);
                     Console.WriteLine("Member name: {0}", database.providers[providerIndex].records[i].memberName);
                     Console.WriteLine("Member number: {0}", database.providers[providerIndex].records[i].memberNumber);
