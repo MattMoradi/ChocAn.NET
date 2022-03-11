@@ -14,8 +14,8 @@ namespace ChocAn
             Console.WriteLine("ChocAn.NET Terminal v1.0\n");
             Console.WriteLine("Hello Manager!");
             ManagerMenu(providers);          //Where most of the magic happens
-            Console.WriteLine("Press any key to return to the console menu...");
-            Console.ReadKey();
+            //Console.WriteLine("Press any key to return to the console menu...");
+            //Console.ReadKey();
         }
 
         private static void ManagerMenu(Database.Providers[] providers) 
