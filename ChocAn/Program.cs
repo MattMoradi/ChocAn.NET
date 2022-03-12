@@ -8,7 +8,10 @@ namespace ChocAn
         {
             bool quit = false;
 
+            Console.WriteLine("ChocAn.NET Terminal v1.0\n");
+
             Database data = new Database();
+            data.persistence(data);
 
             while(!quit)
             {
