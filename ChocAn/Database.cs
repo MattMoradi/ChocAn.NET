@@ -28,17 +28,23 @@ namespace ChocAn
             }
         }
 
-        public void persistence(Database data)
+        public void persistence(Database data, bool prompt)
         {
-            bool validLoad = false;
            try
            {
                 if(Directory.Exists("Members") || Directory.Exists("Providers"))
                 {
+                    bool validLoad = false;
+                    string load;
                     while (validLoad == false)
                     {
-                        Console.Write("Local Database Detected! Attempt to load? (Y / N): ");
-                        var load = Console.ReadLine();
+                        if (prompt == true)
+                        {
+                            Console.Write("Local Database Detected! Attempt to load? (Y / N): ");
+                            load = Console.ReadLine();
+                        }
+                        else
+                            load = "Y";
 
                         if (load == "Y" || load == "y")
                         {
@@ -111,7 +117,7 @@ namespace ChocAn
                                 }
                             }
                             i++;
-                            displayTest(data);
+                            //displayTest(data);
                         }
                         else if (load == "N" || load == "n")
                         {

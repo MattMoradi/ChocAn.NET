@@ -4,7 +4,6 @@ using System.IO;
 using Xunit;
 using Xunit.Abstractions;
 
-
 namespace Tests
 {
     public class DatabaseTests
@@ -42,6 +41,37 @@ namespace Tests
             Assert.True(Directory.Exists("Members"));
             Assert.True(Directory.Exists("Providers"));
         }
-    }
 
+        [Fact]
+        public void PersistenceTest()
+        {
+            if (Directory.Exists("Members") || Directory.Exists("Providers"))
+            {
+                Directory.Delete("Members", true);
+                Directory.Delete("Providers", true);
+            }
+
+            database.members[0].name = "John Johnson";
+            database.members[0].number = 12345678;
+            database.members[0].address = "Johnny Street";
+            database.members[0].city = "jville";
+            database.members[0].state = "JJ";
+            database.members[0].zip = 12345;
+            database.members[0].status = (Database.Validity)2;
+
+            database.save2disk(database);
+
+            Database test = new Database();
+
+            test.persistence(test, false);
+
+            Assert.Equal("John Johnson", test.members[0].name);
+            Assert.Equal(12345678, test.members[0].number);
+            Assert.Equal("Johnny Street", test.members[0].address);
+            Assert.Equal("jville", test.members[0].city);
+            Assert.Equal("JJ", test.members[0].state);
+            Assert.Equal(12345, test.members[0].zip);
+            Assert.Equal((Database.Validity)2, test.members[0].status);
+        }
+    }
 }
