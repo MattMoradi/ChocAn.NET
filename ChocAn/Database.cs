@@ -31,8 +31,8 @@ namespace ChocAn
         public void persistence(Database data)
         {
             bool validLoad = false;
-           // try
-            //{
+           try
+           {
                 if(Directory.Exists("Members") || Directory.Exists("Providers"))
                 {
                     while (validLoad == false)
@@ -125,8 +125,7 @@ namespace ChocAn
                         }
                     }
                 }
-            //}
-            /*
+           }
             catch(Exception e)
             {
                 Console.WriteLine("Failed to load database from disk!\n");
@@ -134,7 +133,6 @@ namespace ChocAn
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }
-            */
         }
 
         public void save2disk(Database data)
@@ -233,6 +231,8 @@ namespace ChocAn
             {
                 Console.WriteLine("Failed to write EFT!");
                 Console.WriteLine("Exception: " + e.Message);
+                Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
             }
         }
 
