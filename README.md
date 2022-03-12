@@ -13,7 +13,7 @@ Setting a member validation status (0-2):
 
 Using the records subarrays (for each index):
 ```
-database.providers[index].record = new Database.ProviderRecords[999];
+database.providers[index].records = new Database.ProviderRecords[999];
 database.providers[index].records[index2].date = "02-20-2022";
 ```
 
